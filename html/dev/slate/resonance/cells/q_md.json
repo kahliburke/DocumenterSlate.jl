@@ -1,0 +1,1 @@
+{"id":"q_md","html":"<section class=\"exp-md\"><h2>Quality factor</h2>\n<p>Light damping gives a tall, narrow peak. Its sharpness is the quality factor $Q = 1/(2\\zeta)$, which\nfor light damping is also roughly the number of cycles the <a href=\"oscillator.jl\">free oscillation</a> takes to\nlose most of its energy.</p>\n</section>","charts":[],"tablemarks":[],"prosemarks":[]}

@@ -89,11 +89,20 @@
    "output": true,
    "source": "T = 2π / (ω * sqrt(1 - zeta^2))\nslate_table([(peak = k, time = round(k * T; digits = 3), height = round(exp(-zeta * ω * k * T); digits = 4)) for k in 0:6])",
    "tags": []
+  },
+  {
+   "file": "cells/next.json",
+   "id": "next",
+   "kind": "markdown",
+   "markdown": "## Driving it\n\nPush the oscillator periodically instead of letting it ring down, and it responds most strongly near\nits natural frequency: [Resonance](resonance.jl).",
+   "native": true,
+   "output": true,
+   "tags": []
   }
  ],
  "frontend": [],
  "generator": "KaimonSlate 1.9.0",
- "key": "dbacbf315ddc1cdaf6729f776ce9b6c6fd5dc93dabb67be991b153d675b18a79",
+ "key": "b9ab6e5967bd8e015fd3380e7718212044437613a04423a7d5068c68bc0310e3",
  "libs": [
   {
    "css": "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css",
@@ -121,7 +130,7 @@
   "title": "A damped oscillator"
  },
  "rendered": {
-  "at": "2026-09-27T09:02:45.005Z",
+  "at": "2026-09-27T09:07:34.549Z",
   "errors": [],
   "julia": "1.12.7",
   "kernel": "worker",
@@ -163,7 +172,7 @@
     0.58,
     0.6
    ],
-   "seconds": 0.26303696632385254,
+   "seconds": 0.17522788047790527,
    "target": "prose",
    "values": [
     [
@@ -324,7 +333,7 @@
     0.58,
     0.6
    ],
-   "seconds": 0.5258769989013672,
+   "seconds": 0.38755297660827637,
    "slice": [
     184
    ],
@@ -366,7 +375,7 @@
     0.58,
     0.6
    ],
-   "seconds": 0.26019287109375,
+   "seconds": 0.17944598197937012,
    "slice": [
     400
    ]

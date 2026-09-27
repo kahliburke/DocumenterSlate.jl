@@ -1,0 +1,337 @@
+{
+ "assets": {
+  "data/zeta_replay-557b33ca.i16.bin": {
+   "dtype": "i16",
+   "mime": "application/octet-stream",
+   "name": "zeta_replay",
+   "order": "col",
+   "path": "data/zeta_replay-557b33ca.i16.bin",
+   "shape": [
+    8,
+    20
+   ],
+   "url": "data/zeta_replay-557b33ca.i16.bin"
+  },
+  "data/zeta_replay-8e7399fa.f64.bin": {
+   "dtype": "f64",
+   "mime": "application/octet-stream",
+   "name": "zeta_replay",
+   "order": "col",
+   "path": "data/zeta_replay-8e7399fa.f64.bin",
+   "shape": [
+    300,
+    20
+   ],
+   "url": "data/zeta_replay-8e7399fa.f64.bin"
+  }
+ },
+ "cells": [
+  {
+   "file": "cells/intro.json",
+   "id": "intro",
+   "kind": "markdown",
+   "markdown": "# Resonance\n\nPush the [damped oscillator](oscillator.jl) with a periodic force of frequency ``\\Omega``, measured in\nunits of its natural frequency, and once the start-up transient has died away it oscillates at the\ndriving frequency. How far it swings depends on how close ``\\Omega`` is to 1, and on the damping ratio\n``\\zeta``: the same ``\\zeta`` that sets how quickly [its free oscillation decays](oscillator.jl#peaks).\n\n\n\n```math\nA(\\Omega) = \\frac{1}{\\sqrt{(1-\\Omega^2)^2 + (2\\zeta\\Omega)^2}}\n```\n\n",
+   "native": true,
+   "output": true,
+   "tags": []
+  },
+  {
+   "file": "cells/controls.json",
+   "hidecode": true,
+   "id": "controls",
+   "kind": "code",
+   "output": true,
+   "source": "@bind zeta Slider(0.05:0.05:1.0; default = 0.1)",
+   "tags": []
+  },
+  {
+   "hidecode": false,
+   "id": "model",
+   "kind": "code",
+   "output": false,
+   "source": "A(Ω, ζ) = 1 / sqrt((1 - Ω^2)^2 + (2ζ * Ω)^2)\nΩs = collect(range(0, 3; length = 300))\nΩpeak = zeta < 1 / sqrt(2) ? sqrt(1 - 2zeta^2) : 0.0\nnothing",
+   "tags": []
+  },
+  {
+   "file": "cells/peak_md.json",
+   "id": "peak_md",
+   "kind": "markdown",
+   "markdown": "At ζ = 0.1 the response peaks at Ω = 0.99, where the oscillator swings\n5.03 times as far as the same force would push it if applied steadily.",
+   "native": false,
+   "output": true,
+   "tags": []
+  },
+  {
+   "file": "cells/response.json",
+   "hidecode": false,
+   "id": "response",
+   "kind": "code",
+   "output": true,
+   "source": "echart(:line, Ωs, @replay(zeta, [A(Ω, zeta) for Ω in Ωs]);\n       name = \"A(Ω)\", showSymbol = false,\n       xAxis = (type = :value, name = \"Ω\"), yAxis = (type = :log, name = \"amplitude\"))",
+   "tags": [
+    "macrocall"
+   ]
+  },
+  {
+   "file": "cells/q_md.json",
+   "id": "q_md",
+   "kind": "markdown",
+   "markdown": "## Quality factor\n\nLight damping gives a tall, narrow peak. Its sharpness is the quality factor ``Q = 1/(2\\zeta)``, which\nfor light damping is also roughly the number of cycles the [free oscillation](oscillator.jl) takes to\nlose most of its energy.",
+   "native": true,
+   "output": true,
+   "tags": []
+  },
+  {
+   "file": "cells/qtable.json",
+   "hidecode": false,
+   "id": "qtable",
+   "kind": "code",
+   "output": true,
+   "source": "slate_table([(ζ = z, Q = round(1 / (2z); digits = 2), peak = round(A(sqrt(max(1 - 2z^2, 0.0)), z); digits = 2))\n             for z in (0.02, 0.05, 0.1, 0.2, 0.5)])",
+   "tags": []
+  }
+ ],
+ "frontend": [],
+ "generator": "KaimonSlate 1.9.0",
+ "key": "e7ebb246948fff30df6f406032a4ec57987d5c20dbe041c61cef95a764a5db19",
+ "libs": [
+  {
+   "css": "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css",
+   "name": "katex"
+  },
+  {
+   "js": "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js",
+   "name": "katex"
+  },
+  {
+   "js": "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js",
+   "name": "katex"
+  },
+  {
+   "js": "https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js",
+   "name": "echarts"
+  }
+ ],
+ "notebook": {
+  "abstract": "",
+  "byline": "",
+  "file": "resonance.jl",
+  "id": "resonance",
+  "subtitle": "",
+  "title": "Resonance"
+ },
+ "rendered": {
+  "at": "2026-09-27T09:07:57.819Z",
+  "errors": [],
+  "julia": "1.12.7",
+  "kernel": "worker",
+  "via": "hub"
+ },
+ "replays": {
+  "peak_md:prose:zeta": {
+   "bytes": 231,
+   "control": "zeta",
+   "domain": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1.0
+   ],
+   "seconds": 0.18810606002807617,
+   "target": "prose",
+   "values": [
+    [
+     "0.05",
+     "0.997",
+     "10.01"
+    ],
+    [
+     "0.1",
+     "0.99",
+     "5.03"
+    ],
+    [
+     "0.15",
+     "0.977",
+     "3.37"
+    ],
+    [
+     "0.2",
+     "0.959",
+     "2.55"
+    ],
+    [
+     "0.25",
+     "0.935",
+     "2.07"
+    ],
+    [
+     "0.3",
+     "0.906",
+     "1.75"
+    ],
+    [
+     "0.35",
+     "0.869",
+     "1.53"
+    ],
+    [
+     "0.4",
+     "0.825",
+     "1.36"
+    ],
+    [
+     "0.45",
+     "0.771",
+     "1.24"
+    ],
+    [
+     "0.5",
+     "0.707",
+     "1.15"
+    ],
+    [
+     "0.55",
+     "0.628",
+     "1.09"
+    ],
+    [
+     "0.6",
+     "0.529",
+     "1.04"
+    ],
+    [
+     "0.65",
+     "0.394",
+     "1.01"
+    ],
+    [
+     "0.7",
+     "0.141",
+     "1.0"
+    ],
+    [
+     "0.75",
+     "0.0",
+     "1.0"
+    ],
+    [
+     "0.8",
+     "0.0",
+     "1.0"
+    ],
+    [
+     "0.85",
+     "0.0",
+     "1.0"
+    ],
+    [
+     "0.9",
+     "0.0",
+     "1.0"
+    ],
+    [
+     "0.95",
+     "0.0",
+     "1.0"
+    ],
+    [
+     "1.0",
+     "0.0",
+     "1.0"
+    ]
+   ]
+  },
+  "qtable:zeta": {
+   "asset": "data/zeta_replay-557b33ca.i16.bin",
+   "bytes": 320,
+   "control": "zeta",
+   "domain": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1.0
+   ],
+   "seconds": 0.3690769672393799,
+   "slice": [
+    8
+   ],
+   "target": "table"
+  },
+  "response:zeta": {
+   "asset": "data/zeta_replay-8e7399fa.f64.bin",
+   "bytes": 48000,
+   "control": "zeta",
+   "domain": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1.0
+   ],
+   "seconds": 0.17820286750793457,
+   "slice": [
+    300
+   ]
+  }
+ },
+ "runtime": "runtime/slate-embed.js",
+ "schema": 1,
+ "theme": {
+  "dark": {
+   "palette": "midnight",
+   "vars": "--bg:#0d1120;--bg2:#141828;--bg3:#1a1e2e;--border:#2a2e40;--text:#d4d8e8;--dim:#6a7090;--accent:#569cd6;--green:#56d364;--red:#e57575;--gold:#ffd700;--orange:#ce9178;--purple:#c586c0;--teal:#4ec9b0;--titlefg:#ffffff;--hl-com:#6a9955;--hl-fn:#dcdcaa;--hl-kw:#c586c0;--hl-macro:#569cd6;--hl-num:#b5cea8;--hl-op:#56b6c2;--hl-str:#ce9178;--hl-sym:#d19a66;--hl-type:#4ec9b0;"
+  },
+  "light": {
+   "palette": "daylight",
+   "vars": "--bg:#ffffff;--bg2:#f5f7fa;--bg3:#eaeef3;--border:#d5dbe3;--text:#222730;--dim:#6b7480;--accent:#0969da;--green:#1a7f37;--red:#cf222e;--gold:#9a6700;--orange:#bc4c00;--purple:#8250df;--teal:#0a7b83;--titlefg:#222730;--hl-com:#008000;--hl-fn:#795e26;--hl-kw:#af00db;--hl-macro:#0000ff;--hl-num:#098658;--hl-op:#0451a5;--hl-str:#a31515;--hl-sym:#b26900;--hl-type:#267f99;"
+  }
+ }
+}
