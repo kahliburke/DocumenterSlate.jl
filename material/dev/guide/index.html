@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Getting started — DocumenterSlate</title>
-  <link rel="stylesheet" href="../assets/materialdocs.css?v=f9d0f849">
+  <link rel="stylesheet" href="../assets/materialdocs.css?v=600d4851">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
   <meta name="title" content="Getting started — DocumenterSlate">
   <meta property="og:title" content="Getting started — DocumenterSlate">
@@ -78,9 +78,11 @@ makedocs(; sitename = &quot;MyPkg&quot;, plugins = [SlateDocs()], pages = […])
 show = &quot;both&quot;
 ```</code></pre>
 </div>
+<h2 id="Notebook-environments" class="md-heading">Notebook environments<a href="#Notebook-environments" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>A notebook runs in the nearest <code class="md-code-inline">Project.toml</code> above it. Give your notebooks a project of their own (<code class="md-code-inline">docs/notebooks/Project.toml</code> here) holding just the packages they use, so a render doesn&#39;t load the docs toolchain into every notebook&#39;s worker.</p>
 <h2 id="Rendering" class="md-heading">Rendering<a href="#Rendering" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
-<p>The docs build never runs a notebook itself. It keeps each notebook&#39;s rendered <em>bundle</em> under <code class="md-code-inline">docs/slate/&lt;name&gt;/</code>, and when a notebook is newer than its bundle it renders it through <a href="https://github.com/kahliburke/KaimonSlate.jl">Kaimon Slate</a>: through the Slate hub you already have running, or, on a machine with none, an isolated Kaimon host it starts for the build.</p>
-<p><strong>Export → Docs</strong> in the notebook writes the same bundle from the notebook as it stands.</p>
+<p>Before any page is built, the docs build renders each referenced notebook whose <em>bundle</em> is missing or older than the notebook. A bundle is the notebook&#39;s rendered output, kept under <code class="md-code-inline">docs/slate/&lt;name&gt;/</code>: the output of each cell, the data behind interactive controls, and the script that draws them. The notebook runs in its own <a href="https://github.com/kahliburke/KaimonSlate.jl">Kaimon Slate</a> worker, through the Slate hub you already have running, or, on a machine with none, an isolated Kaimon host the build starts. A notebook that hasn&#39;t changed isn&#39;t run again.</p>
+<p><code class="md-code-inline">docs/slate/</code> is build output: keep it out of git. <strong>Export → Docs</strong> in the notebook writes a bundle from the notebook as it stands, without a docs build.</p>
 <h2 id="In-CI" class="md-heading">In CI<a href="#In-CI" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
 <p>With the defaults, CI renders every notebook: the build starts an isolated Kaimon host, runs each notebook in its own worker, and writes its bundle before the pages are built. This site is built that way. Keep <code class="md-code-inline">docs/slate/</code> out of git; it is build output.</p>
 <p>A notebook too heavy for CI (GPU work, long fits) can instead have its bundle rendered on a machine that can run it and handed to the build: build with <code class="md-code-inline">SlateDocs(render = :never, stale = :error)</code> and the build uses the bundles it is given, and fails on one that no longer matches its notebook.</p>
@@ -94,6 +96,7 @@ show = &quot;both&quot;
         <p class="md-toc-title">On this page</p>
           <a class="md-toc-link md-toc-h2" href="#Install">Install</a>
           <a class="md-toc-link md-toc-h2" href="#Reference-a-notebook">Reference a notebook</a>
+          <a class="md-toc-link md-toc-h2" href="#Notebook-environments">Notebook environments</a>
           <a class="md-toc-link md-toc-h2" href="#Rendering">Rendering</a>
           <a class="md-toc-link md-toc-h2" href="#In-CI">In CI</a>
       </div>
@@ -105,6 +108,6 @@ show = &quot;both&quot;
   <script>hljs.highlightAll();</script>
   <script src="../siteinfo.js"></script>
   <script src="../../versions.js"></script>
-  <script src="../assets/materialdocs.js?v=f9d0f849"></script>
+  <script src="../assets/materialdocs.js?v=600d4851"></script>
 </body>
 </html>

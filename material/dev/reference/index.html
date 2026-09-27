@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reference — DocumenterSlate</title>
-  <link rel="stylesheet" href="../assets/materialdocs.css?v=6a2e3a6d">
+  <link rel="stylesheet" href="../assets/materialdocs.css?v=641df289">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
   <meta name="title" content="Reference — DocumenterSlate">
   <meta property="og:title" content="Reference — DocumenterSlate">
@@ -72,12 +72,13 @@ show = &quot;both&quot;
 </div>
 <p><code class="md-code-inline">show</code> is <code class="md-code-inline">&quot;output&quot;</code> (the default), <code class="md-code-inline">&quot;code&quot;</code>, or <code class="md-code-inline">&quot;both&quot;</code>.</p>
 <h2 id="Bundles" class="md-heading">Bundles<a href="#Bundles" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
-<p>A bundle is the directory <code class="md-code-inline">&lt;bundles&gt;/&lt;name&gt;/</code> (default <code class="md-code-inline">docs/slate/&lt;name&gt;/</code>), written by KaimonSlate: <strong>Export → Docs</strong> in the notebook, <code class="md-code-inline">slate.export_docs</code> for an agent, or <code class="md-code-inline">KaimonSlate.render_doc_bundle(notebook, dir)</code> from a script. It holds a manifest, one file per cell&#39;s output, the data behind interactive controls, and the script that draws them. Commit it with the docs; the build copies it into the site and never runs the notebook.</p>
+<p>A bundle is a notebook&#39;s rendered output, the directory <code class="md-code-inline">&lt;bundles&gt;/&lt;name&gt;/</code> (default <code class="md-code-inline">docs/slate/&lt;name&gt;/</code>): a manifest, one file per cell&#39;s output, the data behind interactive controls, and the script that draws them. The docs build writes it when the notebook is newer than it, and copies it into the site. It is build output; keep it out of git.</p>
+<p>KaimonSlate also writes one on request: <strong>Export → Docs</strong> in the notebook, <code class="md-code-inline">slate.export_docs</code> for an agent, or <code class="md-code-inline">KaimonSlate.render_doc_bundle(notebook, dir)</code> from a script.</p>
 <h2 id="Plugin" class="md-heading">Plugin<a href="#Plugin" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
 <div class="md-docstring" id="DocumenterSlate">
 <div class="md-docstring-header">
 <h4 class="md-docstring-binding"><code>DocumenterSlate</code></h4>
-<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/3c274a78caf116c01e9f28b38fe85db005839ee8/src/DocumenterSlate.jl#L1-L26" title="View source">source</a>
+<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/37868160b82a6b2de7c7a1069921f8f7a0a684bd/src/DocumenterSlate.jl#L1-L26" title="View source">source</a>
 </div>
 <div class="md-docstring-content">
 <div class="md-code-block">
@@ -104,7 +105,7 @@ show = &quot;both&quot;   # &quot;output&quot; (default), &quot;code&quot;, or &
 <div class="md-docstring" id="DocumenterSlate.SlateDocs">
 <div class="md-docstring-header">
 <h4 class="md-docstring-binding"><code>DocumenterSlate.SlateDocs</code></h4>
-<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/3c274a78caf116c01e9f28b38fe85db005839ee8/src/plugin.jl#L3-L25" title="View source">source</a>
+<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/37868160b82a6b2de7c7a1069921f8f7a0a684bd/src/plugin.jl#L3-L26" title="View source">source</a>
 </div>
 <div class="md-docstring-content">
 <div class="md-code-block">
@@ -115,7 +116,7 @@ show = &quot;both&quot;   # &quot;output&quot; (default), &quot;code&quot;, or &
 <p>Documenter plugin for Slate notebooks. Pass it to <code class="md-code-inline">makedocs(plugins = [SlateDocs()])</code>.</p>
 <p>A page refers to a notebook by its file, relative to the page like a link: <span class="md-math md-math-inline">\(```@slate ../examples/tour.jl\)</span>. The build keeps each referenced notebook&#39;s rendered <em>bundle</em> under <code class="md-code-inline">docs/&lt;bundles&gt;/&lt;name&gt;/</code> (the notebook&#39;s file name without <code class="md-code-inline">.jl</code>) and renders it when it is missing or older than the notebook.</p>
 <ul class="md-list-tight">
-<li><p><code class="md-code-inline">render</code>: <code class="md-code-inline">:auto</code> (default) renders a missing or out-of-date bundle; <code class="md-code-inline">:never</code> uses the bundles on disk as they are (commit them, and CI never runs a notebook); <code class="md-code-inline">:always</code> renders every one.</p>
+<li><p><code class="md-code-inline">render</code>: <code class="md-code-inline">:auto</code> (default) renders a missing or out-of-date bundle; <code class="md-code-inline">:never</code> uses the bundles on disk as they are, for a notebook rendered elsewhere (one too heavy to run in CI); <code class="md-code-inline">:always</code> renders every one.</p>
 </li>
 <li><p><code class="md-code-inline">stale</code>: with <code class="md-code-inline">render = :never</code>, what an out-of-date bundle does: <code class="md-code-inline">:warn</code> (default), <code class="md-code-inline">:error</code> (the setting for a CI that must not publish output the notebook no longer produces), or <code class="md-code-inline">:ignore</code>.</p>
 </li>
@@ -158,6 +159,6 @@ document.querySelectorAll('.md-math').forEach(function (el) {
 });</script>
   <script src="../siteinfo.js"></script>
   <script src="../../versions.js"></script>
-  <script src="../assets/materialdocs.js?v=6a2e3a6d"></script>
+  <script src="../assets/materialdocs.js?v=641df289"></script>
 </body>
 </html>
