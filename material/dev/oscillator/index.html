@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A damped oscillator — DocumenterSlate</title>
-  <link rel="stylesheet" href="../assets/materialdocs.css?v=d96594e7">
+  <link rel="stylesheet" href="../assets/materialdocs.css?v=b4270483">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
   <meta name="title" content="A damped oscillator — DocumenterSlate">
   <meta property="og:title" content="A damped oscillator — DocumenterSlate">
@@ -47,14 +47,18 @@
     <nav class="md-sidebar">
       <a href="../">Home</a>
       <a href="../guide/">Guide</a>
-      <a href="../oscillator/" class="md-nav-active">A damped oscillator</a>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">Notebooks</span>
+        <a href="../oscillator/" class="md-nav-active">A damped oscillator</a>
+        <a href="../resonance/">Resonance</a>
+      </div>
       <a href="../styles/">Styles</a>
       <a href="../reference/">Reference</a>
     </nav>
     <main class="md-content">
       <article class="md-article">
       <div class="md-article-actions"><a class="md-icon-btn md-edit-link" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/main/docs/src/oscillator.md" title="Edit source on GitHub" aria-label="Edit source on GitHub"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></a></div>
-<h1 id="A-damped-oscillator" class="md-heading">A damped oscillator<a href="#A-damped-oscillator" class="md-heading-anchor" aria-label="Link to this section">#</a></h1>
+<h1 id="oscillator-a-damped-oscillator" class="md-heading">A damped oscillator<a href="#oscillator-a-damped-oscillator" class="md-heading-anchor" aria-label="Link to this section">#</a></h1>
 <p>A mass on a spring, with friction. Its displacement is</p>
 <div class="md-math md-math-display">
 \[x(t) = e^{-\zeta \omega t} \cos\left(\omega \sqrt{1-\zeta^2}\, t\right)\]
@@ -74,14 +78,16 @@ nothing</code></pre>
        name = &quot;x(t)&quot;, showSymbol = false,
        xAxis = (type = :value, name = &quot;t (s)&quot;), yAxis = (type = :value, min = -1, max = 1))</code></pre>
 </div>
-<slate-cell bundle="oscillator" cell="trace"></slate-cell><h2 id="Peaks" class="md-heading">Peaks<a href="#Peaks" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<slate-cell bundle="oscillator" cell="trace"></slate-cell><h2 id="oscillator-peaks" class="md-heading">Peaks<a href="#oscillator-peaks" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
 <p>Each successive peak is smaller by the same factor, so the peaks alone tell you the damping.</p>
 <div class="md-code-block">
 <button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
 <pre><code class="language-julia">T = 2π / (ω * sqrt(1 - zeta^2))
 slate_table([(peak = k, time = round(k * T; digits = 3), height = round(exp(-zeta * ω * k * T); digits = 4)) for k in 0:6])</code></pre>
 </div>
-<slate-cell bundle="oscillator" cell="peaks"></slate-cell>      </article>
+<slate-cell bundle="oscillator" cell="peaks"></slate-cell><h2 id="oscillator-driving-it" class="md-heading">Driving it<a href="#oscillator-driving-it" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>Push the oscillator periodically instead of letting it ring down, and it responds most strongly near its natural frequency: <a href="../resonance/">Resonance</a>.</p>
+      </article>
       <footer class="md-footer">
 <p>Built with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and <a href="https://github.com/mthelm85/MaterialDocs.jl">MaterialDocs.jl</a>.</p>
       </footer>
@@ -89,7 +95,8 @@ slate_table([(peak = k, time = round(k * T; digits = 3), height = round(exp(-zet
     <aside class="md-toc">
       <div class="md-toc-inner">
         <p class="md-toc-title">On this page</p>
-          <a class="md-toc-link md-toc-h2" href="#Peaks">Peaks</a>
+          <a class="md-toc-link md-toc-h2" href="#oscillator-peaks">Peaks</a>
+          <a class="md-toc-link md-toc-h2" href="#oscillator-driving-it">Driving it</a>
       </div>
     </aside>
   </div>
@@ -107,6 +114,6 @@ document.querySelectorAll('.md-math').forEach(function (el) {
 });</script>
   <script src="../siteinfo.js"></script>
   <script src="../../versions.js"></script>
-  <script src="../assets/materialdocs.js?v=d96594e7"></script>
+  <script src="../assets/materialdocs.js?v=b4270483"></script>
 </body>
 </html>
