@@ -12,7 +12,8 @@ under `docs/<bundles>/<name>/` (the notebook's file name without `.jl`) and rend
 missing or older than the notebook.
 
 - `render`: `:auto` (default) renders a missing or out-of-date bundle; `:never` uses the bundles on
-  disk as they are (commit them, and CI never runs a notebook); `:always` renders every one.
+  disk as they are, for a notebook rendered elsewhere (one too heavy to run in CI); `:always` renders
+  every one.
 - `stale`: with `render = :never`, what an out-of-date bundle does: `:warn` (default), `:error` (the
   setting for a CI that must not publish output the notebook no longer produces), or `:ignore`.
 - `backend`: how a render runs a notebook, see `KaimonSlate.render_doc_bundle`. `:auto` uses the Slate

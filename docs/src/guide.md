@@ -31,14 +31,23 @@ show = "both"
 ```
 ````
 
+## Notebook environments
+
+A notebook runs in the nearest `Project.toml` above it. Give your notebooks a project of their own
+(`docs/notebooks/Project.toml` here) holding just the packages they use, so a render doesn't load the
+docs toolchain into every notebook's worker.
+
 ## Rendering
 
-The docs build never runs a notebook itself. It keeps each notebook's rendered *bundle* under
-`docs/slate/<name>/`, and when a notebook is newer than its bundle it renders it through
-[Kaimon Slate](https://github.com/kahliburke/KaimonSlate.jl): through the Slate hub you already have
-running, or, on a machine with none, an isolated Kaimon host it starts for the build.
+Before any page is built, the docs build renders each referenced notebook whose *bundle* is missing
+or older than the notebook. A bundle is the notebook's rendered output, kept under
+`docs/slate/<name>/`: the output of each cell, the data behind interactive controls, and the script
+that draws them. The notebook runs in its own [Kaimon Slate](https://github.com/kahliburke/KaimonSlate.jl)
+worker, through the Slate hub you already have running, or, on a machine with none, an isolated
+Kaimon host the build starts. A notebook that hasn't changed isn't run again.
 
-**Export → Docs** in the notebook writes the same bundle from the notebook as it stands.
+`docs/slate/` is build output: keep it out of git. **Export → Docs** in the notebook writes a bundle
+from the notebook as it stands, without a docs build.
 
 ## In CI
 

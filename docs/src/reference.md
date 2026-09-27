@@ -25,11 +25,13 @@ show = "both"
 
 ## Bundles
 
-A bundle is the directory `<bundles>/<name>/` (default `docs/slate/<name>/`), written by
-KaimonSlate: **Export → Docs** in the notebook, `slate.export_docs` for an agent, or
-`KaimonSlate.render_doc_bundle(notebook, dir)` from a script. It holds a manifest, one file per
-cell's output, the data behind interactive controls, and the script that draws them. Commit it with
-the docs; the build copies it into the site and never runs the notebook.
+A bundle is a notebook's rendered output, the directory `<bundles>/<name>/` (default
+`docs/slate/<name>/`): a manifest, one file per cell's output, the data behind interactive controls,
+and the script that draws them. The docs build writes it when the notebook is newer than it, and
+copies it into the site. It is build output; keep it out of git.
+
+KaimonSlate also writes one on request: **Export → Docs** in the notebook, `slate.export_docs` for an
+agent, or `KaimonSlate.render_doc_bundle(notebook, dir)` from a script.
 
 ## Plugin
 
