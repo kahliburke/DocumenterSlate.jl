@@ -45,6 +45,14 @@ Each successive peak is smaller by the same factor, so the peaks alone tell you 
 T = 2π / (ω * sqrt(1 - zeta^2))
 slate_table([(peak = k, time = round(k * T; digits = 3), height = round(exp(-zeta * ω * k * T); digits = 4)) for k in 0:6])
 
+#%% md id=next
+@md"""
+## Driving it
+
+Push the oscillator periodically instead of letting it ring down, and it responds most strongly near
+its natural frequency: [Resonance](resonance.jl).
+"""
+
 # ╔═╡ Slate.config · per-notebook settings (Settings panel)
 #   docid = c64702ef-775e-42ff-bfc5-12fc2fc8a4a3
 # ╚═╡

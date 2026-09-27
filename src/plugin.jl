@@ -34,6 +34,7 @@ mutable struct SlateDocs <: Documenter.Plugin
     dark::String
     # Filled in during a build.
     sources::Dict{String,String}  # bundle name => notebook file, for every notebook the build knows
+    pages::Dict{String,Any}       # notebook file => the page that places the whole notebook
     loaded::Dict{String,Bundle}
     public::String                # a directory whose contents a Vitepress build copies into `public/`
 end
@@ -45,7 +46,7 @@ function SlateDocs(; notebooks = Pair{String,String}[], bundles::AbstractString 
     render in (:auto, :never, :always) || throw(ArgumentError("render must be :auto, :never or :always"))
     nbs = Pair{String,String}[String(k) => String(v) for (k, v) in notebooks]
     return SlateDocs(nbs, String(bundles), stale, render, backend, String(light), String(dark),
-                     Dict{String,String}(), Dict{String,Bundle}(), "")
+                     Dict{String,String}(), Dict{String,Any}(), Dict{String,Bundle}(), "")
 end
 
 """

@@ -37,6 +37,7 @@ export SlateDocs
 include("bundles.jl")
 include("plugin.jl")
 include("splice.jl")
+include("links.jl")
 include("expander.jl")
 include("html.jl")
 include("vitepress.jl")

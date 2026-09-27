@@ -1,0 +1,2 @@
+```@slate ../notebooks/resonance.jl
+```

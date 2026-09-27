@@ -16,6 +16,9 @@ hero:
     - theme: alt
       text: GitHub
       link: https://github.com/kahliburke/DocumenterSlate.jl
+  image:
+    src: /logo-hero.svg
+    alt: A Slate notebook cell drawn live on a docs page
 
 features:
   - icon: 📓

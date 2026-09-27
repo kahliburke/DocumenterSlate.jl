@@ -134,6 +134,44 @@ end
         end
     end
 
+    @testset "links between notebooks go to their pages and headings" begin
+        mdbundle(dir, nb, md) = begin
+            mkpath(joinpath(dir, "runtime")); write(joinpath(dir, "runtime", "slate-embed.js"), "")
+            write(joinpath(dir, "slate-bundle.json"), JSON.json(Dict("schema" => 1, "key" => DS.notebook_key(nb),
+                "rendered" => Dict("at" => "x"), "runtime" => "runtime/slate-embed.js",
+                "cells" => [Dict("id" => "a", "kind" => "markdown", "tags" => String[], "native" => true,
+                                 "output" => true, "markdown" => md)])))
+        end
+        mktempdir() do root
+            src = joinpath(root, "src"); nbs = joinpath(root, "nb"); mkpath(src); mkpath(nbs)
+            a = joinpath(nbs, "springs.jl"); w = joinpath(nbs, "waves.jl")
+            write(a, "#%% md id=a\n"); write(w, "#%% md id=a\n")
+            mdbundle(joinpath(root, "slate", "springs"), a,
+                     "# Springs\n\n## Results\n\nSee [the waves](waves.jl), their [modes](waves.jl#modes), and [below](#results).\n")
+            mdbundle(joinpath(root, "slate", "waves"), w, "# Waves\n\n## Modes\n\nBack to [springs](springs.jl#results).\n")
+            write(joinpath(src, "springs.md"), "```@slate ../nb/springs.jl\n```\n")
+            write(joinpath(src, "waves.md"), "```@slate ../nb/waves.jl\n```\n")
+            write(joinpath(src, "index.md"), "# Home\n\n[The modes](../nb/waves.jl#modes) and [springs](../nb/springs.jl).\n")
+            makedocs(; root, source = "src", build = "build", sitename = "T", remotes = nothing,
+                     format = Documenter.HTML(; prettyurls = false),
+                     pages = ["index.md", "springs.md", "waves.md"], plugins = [SlateDocs(render = :never)],
+                     doctest = false)               # not warnonly: an unresolved cross-reference fails
+            springs = read(joinpath(root, "build", "springs.html"), String)
+            waves = read(joinpath(root, "build", "waves.html"), String)
+            index = read(joinpath(root, "build", "index.html"), String)
+            # headings carry notebook-scoped anchors, so "Results" in two notebooks cannot collide
+            @test occursin("id=\"springs-results\"", springs) && occursin("id=\"waves-modes\"", waves)
+            # a notebook's links to another notebook go to its page, or to the heading on it
+            @test occursin("href=\"waves.html\"", springs)
+            @test occursin("href=\"waves.html#waves-modes\"", springs)
+            @test occursin("href=\"springs.html#springs-results\"", waves)
+            # a link to its own heading stays on the page
+            @test occursin("href=\"#springs-results\"", springs)
+            # a hand-written page links to notebooks by path the same way
+            @test occursin("href=\"waves.html#waves-modes\"", index) && occursin("href=\"springs.html\"", index)
+        end
+    end
+
     @testset "a bundle from a newer schema is refused" begin
         mktempdir() do d
             write_bundle(d; schema = DS.SCHEMA + 1)

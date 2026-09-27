@@ -38,7 +38,8 @@ makedocs(;
     modules = [DocumenterSlate],
     checkdocs = :exports,
     format, plugins, build,
-    pages = ["Home" => "index.md", "Guide" => "guide.md", "A damped oscillator" => "oscillator.md",
+    pages = ["Home" => "index.md", "Guide" => "guide.md",
+             "Notebooks" => ["A damped oscillator" => "oscillator.md", "Resonance" => "resonance.md"],
              "Styles" => "styles.md", "Reference" => "reference.md"],
 )
 
