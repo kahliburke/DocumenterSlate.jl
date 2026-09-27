@@ -42,10 +42,10 @@ running, or, on a machine with none, an isolated Kaimon host it starts for the b
 
 ## In CI
 
-Two ways to run it:
+With the defaults, CI renders every notebook: the build starts an isolated Kaimon host, runs each
+notebook in its own worker, and writes its bundle before the pages are built. This site is built that
+way. Keep `docs/slate/` out of git; it is build output.
 
-- **Commit the bundles** and build with `SlateDocs(render = :never, stale = :error)`. CI never
-  executes a notebook, needs no Kaimon, and fails if a bundle no longer matches its notebook. This is
-  what this site does.
-- **Render in CI** with the default `render = :auto`: the build starts a Kaimon host and renders
-  whatever is out of date.
+A notebook too heavy for CI (GPU work, long fits) can instead have its bundle rendered on a machine
+that can run it and handed to the build: build with `SlateDocs(render = :never, stale = :error)` and
+the build uses the bundles it is given, and fails on one that no longer matches its notebook.

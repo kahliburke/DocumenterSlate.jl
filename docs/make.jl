@@ -10,9 +10,9 @@ const REPO = "github.com/kahliburke/DocumenterSlate.jl"
 
 FLAVOR in ("vitepress", "html", "material") || error("DOCS_FLAVOR must be vitepress, html or material")
 
-# Bundles are committed, and CI renders nothing: it builds from them and fails on one that no longer
-# matches its notebook. Locally a changed notebook is re-rendered through the Slate hub.
-slate = SlateDocs(; render = CI ? :never : :auto, stale = CI ? :error : :warn)
+# Bundles are a build product (git-ignored): each build renders a notebook whose bundle is missing
+# or older than the notebook, through the Slate hub on this machine or, in CI, a Kaimon host it starts.
+slate = SlateDocs()
 
 if FLAVOR == "vitepress"
     using DocumenterVitepress

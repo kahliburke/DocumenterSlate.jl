@@ -27,9 +27,9 @@ features:
   - icon: 🌗
     title: Fits the site it lands in
     details: Follows the site's light and dark theme, and works with Documenter, DocumenterVitepress and MaterialDocs.
-  - icon: 🔒
-    title: CI runs nothing, if you like
-    details: Commit the rendered bundles and the docs build never executes a notebook; a stale one fails the build.
+  - icon: ⚙️
+    title: Rendered by your docs build
+    details: CI runs each notebook in its own Slate worker as part of the build, with the fidelity of the live notebook.
 ---
 ```
 

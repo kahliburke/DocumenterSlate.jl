@@ -25,8 +25,8 @@ jobs:
       - uses: julia-actions/cache@v2
       - name: Install dependencies
         run: julia --project=docs -e 'using Pkg; Pkg.instantiate()'
-      # The Slate bundles under docs/slate are committed; each build reads them and fails on a stale
-      # one. The same sources are built by three writers, each deployed to its own path.
+      # The first build renders the notebooks (starting an isolated Kaimon host); the other two find
+      # the bundles current. The same sources are built by three writers, each deployed to its own path.
       - name: Vitepress → /
         run: julia --project=docs docs/make.jl
         env:

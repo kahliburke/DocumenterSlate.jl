@@ -60,6 +60,4 @@ for the build. The bundle has the same fidelity as the live notebook.
 **Export → Docs** in the notebook writes the same bundle from its live state, and an agent can call
 `slate.export_docs`.
 
-To keep CI from running notebooks at all, commit the bundles and build with
-`SlateDocs(render = :never, stale = :error)`: the build uses them as they are and fails on one that no
-longer matches its notebook. This package's own docs work that way.
+`docs/slate/` is build output; keep it out of git. This package's own docs are rendered in CI.

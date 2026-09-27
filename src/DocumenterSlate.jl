@@ -1,31 +1,26 @@
 """
     DocumenterSlate
 
-Put Slate notebooks into Documenter docs. A notebook is rendered once into a *bundle* (a directory of
-files, committed with the docs); the docs build reads bundles and never runs a notebook itself.
-
-In a page, a whole notebook:
+Put Slate notebooks into Documenter docs. In a page, a whole notebook, by its file relative to the page:
 
 ````markdown
-```@slate oscillator
+```@slate ../notebooks/oscillator.jl
 ```
 ````
 
 Its markdown becomes the page's own prose, its code becomes ordinary highlighted code blocks, and
-each output is drawn by a `<slate-cell>` element — interactive charts, tables and `@replay` controls
+each output is drawn by a `<slate-cell>` element, interactive charts, tables and `@replay` controls
 included. One cell of it:
 
 ````markdown
-```@slate oscillator phase_plot
+```@slate ../notebooks/oscillator.jl trace
 show = "both"   # "output" (default), "code", or "both"
 ```
 ````
 
-In `make.jl`:
-
-```julia
-makedocs(; …, plugins = [SlateDocs(notebooks = ["oscillator" => "../examples/oscillator.jl"])])
-```
+In `make.jl`, `makedocs(; …, plugins = [SlateDocs()])`. The build renders each referenced notebook into
+a *bundle* (a directory of files under `docs/slate/`, build output) when the bundle is missing or older
+than the notebook, through Kaimon Slate.
 
 See [`SlateDocs`](@ref) for where bundles live and what happens when one is out of date.
 """
