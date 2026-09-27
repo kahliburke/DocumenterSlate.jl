@@ -35,4 +35,4 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 test = ["Test"]
 
 [sources]
-KaimonSlate = {path = "../KaimonSlate.jl/.claude/worktrees/documenter"}
+KaimonSlate = {url = "https://github.com/kahliburke/KaimonSlate.jl", rev = "feat/documenter"}

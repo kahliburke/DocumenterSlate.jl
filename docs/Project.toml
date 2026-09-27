@@ -6,9 +6,7 @@ DocumenterSlate = "5d80218d-9a2a-4b5c-a024-19fb641bfa22"
 DocumenterVitepress = "4710194d-e776-4893-9690-8d956a29c365"
 KaimonSlate = "f7b954f5-0334-4562-ac21-b005218ce1da"
 MaterialDocs = "10bdffc8-969c-4dd4-83f3-742518eccd6b"
-SlateExtensionsBase = "bc31d39e-4442-48fa-b9ae-1bd99fed63f7"
 
 [sources]
 DocumenterSlate = {path = ".."}
-KaimonSlate = {path = "../../KaimonSlate.jl/.claude/worktrees/documenter"}
-SlateExtensionsBase = {path = "../../KaimonSlate.jl/.claude/worktrees/documenter/lib/SlateExtensionsBase"}
+KaimonSlate = {url = "https://github.com/kahliburke/KaimonSlate.jl", rev = "feat/documenter"}
