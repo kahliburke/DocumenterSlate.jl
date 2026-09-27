@@ -22,6 +22,7 @@ the damping.
 ts = collect(range(0, 6; length = 400))
 x(t, ζ) = exp(-ζ * ω * t) * cos(ω * sqrt(1 - ζ^2) * t)
 halflife = log(2) / (zeta * ω)
+nothing
 
 #%% md id=halflife_md
 @md"""
@@ -29,13 +30,9 @@ At ζ = {{ zeta }} the amplitude falls to half in {{ round(halflife; digits = 2)
 """
 
 #%% code id=trace
-echart(Dict(
-    "tooltip" => Dict("trigger" => "axis"),
-    "xAxis" => Dict("type" => "value", "name" => "t (s)"),
-    "yAxis" => Dict("type" => "value", "min" => -1, "max" => 1),
-    "series" => [Dict("type" => "line", "showSymbol" => false, "name" => "x(t)",
-                      "data" => @replay(zeta, [[t, x(t, zeta)] for t in ts]))],
-))
+echart(:line, ts, @replay(zeta, [x(t, zeta) for t in ts]);
+       name = "x(t)", showSymbol = false,
+       xAxis = (type = :value, name = "t (s)"), yAxis = (type = :value, min = -1, max = 1))
 
 #%% md id=table_md
 @md"""
