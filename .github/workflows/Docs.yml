@@ -25,9 +25,23 @@ jobs:
       - uses: julia-actions/cache@v2
       - name: Install dependencies
         run: julia --project=docs -e 'using Pkg; Pkg.instantiate()'
-      # The Slate bundles under docs/slate are committed; the build reads them and fails on a stale one.
-      - name: Build and deploy
+      # The Slate bundles under docs/slate are committed; each build reads them and fails on a stale
+      # one. The same sources are built by three writers, each deployed to its own path.
+      - name: Vitepress → /
         run: julia --project=docs docs/make.jl
         env:
+          DOCS_FLAVOR: vitepress
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+      - name: Documenter HTML → /html/
+        run: julia --project=docs docs/make.jl
+        env:
+          DOCS_FLAVOR: html
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+      - name: MaterialDocs → /material/
+        run: julia --project=docs docs/make.jl
+        env:
+          DOCS_FLAVOR: material
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}

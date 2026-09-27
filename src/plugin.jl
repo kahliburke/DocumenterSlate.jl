@@ -61,7 +61,16 @@ plugin(doc::Documenter.Document) = Documenter.getplugin(doc, SlateDocs)
 bundles_dir(doc, p::SlateDocs) = normpath(joinpath(doc.user.root, p.bundles))
 
 is_vitepress(fmt) = nameof(typeof(fmt)) === :MarkdownVitepress
-html_format(doc) = (i = findfirst(f -> f isa Documenter.HTML, doc.user.format); i === nothing ? nothing : doc.user.format[i])
+
+"""
+    html_settings(format) -> Union{Documenter.HTML, Nothing}
+
+The `Documenter.HTML` settings whose `assets` a writer puts in each page's `<head>`, or `nothing` for a
+writer that doesn't produce HTML pages that way. A package extension adds a method for its writer
+(MaterialDocs keeps one in `fmt.html`).
+"""
+html_settings(fmt::Documenter.HTML) = fmt
+html_settings(::Any) = nothing
 
 # ── References: what a page's `@slate` block names ────────────────────────────────────────────────
 
@@ -201,12 +210,14 @@ function install!(doc, p::SlateDocs)
         p.public = mktempdir(; prefix = "slatedocs-public-")
         fill!(joinpath(p.public, "slate"))
     end
-    html = html_format(doc)
-    if html !== nothing
-        fill!(joinpath(doc.user.build, "slate"))
-        uri = "slate/runtime/slate-embed.js"
+    htmls = filter(!isnothing, map(html_settings, doc.user.format))
+    isempty(htmls) || fill!(joinpath(doc.user.build, "slate"))
+    uri = "slate/runtime/slate-embed.js"
+    for html in htmls
+        # `defer`: the element upgrades whenever the script runs, so nothing waits on it.
         any(a -> a isa HTMLWriter.HTMLAsset && a.uri == uri, html.assets) ||
-            push!(html.assets, Documenter.asset(uri; class = :js, islocal = true))
+            push!(html.assets, Documenter.asset(uri; class = :js, islocal = true,
+                                                attributes = Dict(:defer => "defer")))
     end
     return nothing
 end

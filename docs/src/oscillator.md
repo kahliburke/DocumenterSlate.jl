@@ -1,2 +1,2 @@
-```@slate oscillator
+```@slate ../notebooks/oscillator.jl
 ```

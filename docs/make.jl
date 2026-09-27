@@ -1,30 +1,50 @@
-using Documenter, DocumenterVitepress, DocumenterSlate
+using Documenter, DocumenterSlate
 
-# DOCS_FORMAT=html builds with Documenter's own HTML writer instead of Vitepress, to check both.
-const HTML_WRITER = get(ENV, "DOCS_FORMAT", "vitepress") == "html"
+# The same site, built by different writers and published side by side (see `styles.md`):
+#   vitepress  DocumenterVitepress                                        → /
+#   html       Documenter's HTML writer + DocumenterLandingPage + DocumenterCodeBlocks → /html/
+#   material   MaterialDocs + DocumenterLandingPage                       → /material/
+const FLAVOR = get(ENV, "DOCS_FLAVOR", "vitepress")
 const CI = get(ENV, "CI", "false") == "true"
 const REPO = "github.com/kahliburke/DocumenterSlate.jl"
 
-format = HTML_WRITER ?
-    Documenter.HTML(; prettyurls = CI, inventory_version = pkgversion(DocumenterSlate)) :
-    MarkdownVitepress(; repo = REPO, devbranch = "main", devurl = "dev")
+FLAVOR in ("vitepress", "html", "material") || error("DOCS_FLAVOR must be vitepress, html or material")
+
+# Bundles are committed, and CI renders nothing: it builds from them and fails on one that no longer
+# matches its notebook. Locally a changed notebook is re-rendered through the Slate hub.
+slate = SlateDocs(; render = CI ? :never : :auto, stale = CI ? :error : :warn)
+
+if FLAVOR == "vitepress"
+    using DocumenterVitepress
+    format = MarkdownVitepress(; repo = REPO, devbranch = "main", devurl = "dev")
+    plugins = [slate]
+elseif FLAVOR == "html"
+    using DocumenterLandingPage, DocumenterCodeBlocks
+    format = Documenter.HTML(; prettyurls = CI, edit_link = "main",
+                             inventory_version = pkgversion(DocumenterSlate))
+    plugins = [LandingPage(), CodeBlocks(), slate]
+else
+    using DocumenterLandingPage, MaterialDocs
+    format = Material3(; prettyurls = CI, edit_link = "main", dark_mode = :toggle,
+                       inventory_version = pkgversion(DocumenterSlate))
+    plugins = [LandingPage(), slate]
+end
+
+build = FLAVOR == "vitepress" ? "build" : "build-$FLAVOR"
 
 makedocs(;
     sitename = "DocumenterSlate",
     repo = Remotes.GitHub("kahliburke", "DocumenterSlate.jl"),
     modules = [DocumenterSlate],
     checkdocs = :exports,
-    format,
-    pages = ["Home" => "index.md", "A damped oscillator" => "oscillator.md", "Reference" => "reference.md"],
-    # Bundles are rendered by the author and committed. CI builds from them and fails if one no
-    # longer matches its notebook, rather than publishing output the notebook no longer produces.
-    plugins = [SlateDocs(notebooks = ["oscillator" => "notebooks/oscillator.jl"],
-                         stale = CI ? :error : :warn)],
+    format, plugins, build,
+    pages = ["Home" => "index.md", "Guide" => "guide.md", "A damped oscillator" => "oscillator.md",
+             "Styles" => "styles.md", "Reference" => "reference.md"],
 )
 
 if CI
-    HTML_WRITER ?
-        deploydocs(; repo = REPO, devbranch = "main", push_preview = true) :
-        DocumenterVitepress.deploydocs(; repo = REPO, target = joinpath(@__DIR__, "build"),
-                                       branch = "gh-pages", devbranch = "main", push_preview = true)
+    FLAVOR == "vitepress" ?
+        DocumenterVitepress.deploydocs(; repo = REPO, target = joinpath(@__DIR__, build),
+                                       branch = "gh-pages", devbranch = "main", push_preview = true) :
+        deploydocs(; repo = REPO, target = build, dirname = FLAVOR, devbranch = "main", push_preview = true)
 end

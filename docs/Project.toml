@@ -1,7 +1,14 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+DocumenterCodeBlocks = "b6400b83-267f-4b55-9fd8-bffc853bdfd8"
+DocumenterLandingPage = "1c52b33b-3e2f-4e99-b3b5-a6ad63f0d6d2"
 DocumenterSlate = "5d80218d-9a2a-4b5c-a024-19fb641bfa22"
 DocumenterVitepress = "4710194d-e776-4893-9690-8d956a29c365"
+KaimonSlate = "f7b954f5-0334-4562-ac21-b005218ce1da"
+MaterialDocs = "10bdffc8-969c-4dd4-83f3-742518eccd6b"
+SlateExtensionsBase = "bc31d39e-4442-48fa-b9ae-1bd99fed63f7"
 
 [sources]
 DocumenterSlate = {path = ".."}
+KaimonSlate = {path = "../../KaimonSlate.jl/.claude/worktrees/documenter"}
+SlateExtensionsBase = {path = "../../KaimonSlate.jl/.claude/worktrees/documenter/lib/SlateExtensionsBase"}
