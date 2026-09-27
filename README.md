@@ -52,12 +52,23 @@ Cells tagged `nodocs` are left out of a whole-notebook page; `hidecode` cells sh
 
 ## How it works
 
-The docs build never runs a notebook itself. It keeps each notebook's rendered *bundle* under
-`docs/slate/<name>/` and, when a notebook is newer than its bundle, renders it through Kaimon Slate:
-the Slate hub already running on your machine, or, with none (CI), an isolated Kaimon host it starts
-for the build. The bundle has the same fidelity as the live notebook.
+A docs build does this before any page is rendered:
 
-**Export → Docs** in the notebook writes the same bundle from its live state, and an agent can call
-`slate.export_docs`.
+1. **Finds the notebooks.** Every `@slate` block names a notebook file; the plugin collects them from
+   all pages.
+2. **Renders what changed.** Each notebook has a rendered *bundle* under `docs/slate/<name>/`, keyed by
+   the notebook file's hash. A notebook with no bundle, or one newer than its bundle, is run through
+   Kaimon Slate in its own worker, with the fidelity of the live notebook: charts, tables, and the
+   `@replay` sweeps that keep controls working. On your machine that goes through the Slate hub you
+   already run; in CI, through an isolated Kaimon host the build starts itself.
+3. **Places the notebook in the page.** Markdown cells become the page's own markdown, code cells become
+   code blocks highlighted by the site, and each output becomes a `<slate-cell>` element. The bundles
+   and the small script that draws them are copied into the site.
 
-`docs/slate/` is build output; keep it out of git. This package's own docs are rendered in CI.
+In the browser, each `<slate-cell>` loads its cell's output from the bundle and draws it in its own
+shadow DOM, so the site's styles and the cell's don't mix. Cells follow the site's light and dark
+theme, and a control in one cell drives the charts, tables and prose of the others.
+
+`docs/slate/` is build output; keep it out of git. **Export → Docs** in the notebook writes a bundle
+from the notebook's live state, and an agent can call `slate.export_docs`. For a notebook too heavy to
+run in CI, render its bundle elsewhere and build with `SlateDocs(render = :never)`.
