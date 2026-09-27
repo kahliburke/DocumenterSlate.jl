@@ -46,6 +46,9 @@ using KaimonSlate
 render_doc_bundle("notebooks/oscillator.jl", "slate/oscillator")
 ```
 
+From the notebook itself, **Export → Docs** writes the same bundle from its live state (by default to
+`docs/slate/<notebook>` beside the nearest `docs/make.jl`), and an agent can call `slate.export_docs`.
+
 `render_doc_bundle` runs the notebook through the Slate hub already running on your machine, or,
 with none, an isolated Kaimon host started for the render, so the bundle has the same fidelity as
 the live notebook. A bundle records the hash of the notebook it came from; the build warns about (or,
