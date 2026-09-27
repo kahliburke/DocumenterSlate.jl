@@ -1,0 +1,387 @@
+{
+ "assets": {
+  "data/zeta_replay-3d1de615.f64.bin": {
+   "dtype": "f64",
+   "mime": "application/octet-stream",
+   "name": "zeta_replay",
+   "order": "col",
+   "path": "data/zeta_replay-3d1de615.f64.bin",
+   "shape": [
+    400,
+    30
+   ],
+   "url": "data/zeta_replay-3d1de615.f64.bin"
+  },
+  "data/zeta_replay-e230fc5f.i16.bin": {
+   "dtype": "i16",
+   "mime": "application/octet-stream",
+   "name": "zeta_replay",
+   "order": "col",
+   "path": "data/zeta_replay-e230fc5f.i16.bin",
+   "shape": [
+    184,
+    30
+   ],
+   "url": "data/zeta_replay-e230fc5f.i16.bin"
+  }
+ },
+ "cells": [
+  {
+   "file": "cells/intro.json",
+   "id": "intro",
+   "kind": "markdown",
+   "markdown": "# A damped oscillator\n\nA mass on a spring, with friction. Its displacement is\n\n\n\n```math\nx(t) = e^{-\\zeta \\omega t} \\cos\\left(\\omega \\sqrt{1-\\zeta^2}\\, t\\right)\n```\n\n\n\nwhere ``\\omega`` is the natural frequency and ``\\zeta`` the damping ratio. Drag the slider to change\nthe damping.",
+   "native": true,
+   "output": true,
+   "tags": []
+  },
+  {
+   "file": "cells/controls.json",
+   "hidecode": true,
+   "id": "controls",
+   "kind": "code",
+   "output": true,
+   "source": "@bind zeta Slider(0.02:0.02:0.6; default = 0.1)",
+   "tags": []
+  },
+  {
+   "hidecode": false,
+   "id": "model",
+   "kind": "code",
+   "output": false,
+   "source": "ω = 2π\nts = collect(range(0, 6; length = 400))\nx(t, ζ) = exp(-ζ * ω * t) * cos(ω * sqrt(1 - ζ^2) * t)\nhalflife = log(2) / (zeta * ω)\nnothing",
+   "tags": []
+  },
+  {
+   "file": "cells/halflife_md.json",
+   "id": "halflife_md",
+   "kind": "markdown",
+   "markdown": "At ζ = 0.1 the amplitude falls to half in 1.1 seconds.",
+   "native": false,
+   "output": true,
+   "tags": []
+  },
+  {
+   "file": "cells/trace.json",
+   "hidecode": false,
+   "id": "trace",
+   "kind": "code",
+   "output": true,
+   "source": "echart(:line, ts, @replay(zeta, [x(t, zeta) for t in ts]);\n       name = \"x(t)\", showSymbol = false,\n       xAxis = (type = :value, name = \"t (s)\"), yAxis = (type = :value, min = -1, max = 1))",
+   "tags": [
+    "macrocall"
+   ]
+  },
+  {
+   "file": "cells/table_md.json",
+   "id": "table_md",
+   "kind": "markdown",
+   "markdown": "## Peaks\n\nEach successive peak is smaller by the same factor, so the peaks alone tell you the damping.",
+   "native": true,
+   "output": true,
+   "tags": []
+  },
+  {
+   "file": "cells/peaks.json",
+   "hidecode": false,
+   "id": "peaks",
+   "kind": "code",
+   "output": true,
+   "source": "T = 2π / (ω * sqrt(1 - zeta^2))\nslate_table([(peak = k, time = round(k * T; digits = 3), height = round(exp(-zeta * ω * k * T); digits = 4)) for k in 0:6])",
+   "tags": []
+  }
+ ],
+ "frontend": [],
+ "generator": "KaimonSlate 1.9.0",
+ "key": "dbacbf315ddc1cdaf6729f776ce9b6c6fd5dc93dabb67be991b153d675b18a79",
+ "libs": [
+  {
+   "css": "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css",
+   "name": "katex"
+  },
+  {
+   "js": "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js",
+   "name": "katex"
+  },
+  {
+   "js": "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js",
+   "name": "katex"
+  },
+  {
+   "js": "https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js",
+   "name": "echarts"
+  }
+ ],
+ "notebook": {
+  "abstract": "",
+  "byline": "",
+  "file": "oscillator.jl",
+  "id": "oscillator",
+  "subtitle": "",
+  "title": "A damped oscillator"
+ },
+ "rendered": {
+  "at": "2026-09-27T06:43:48.039Z",
+  "errors": [],
+  "julia": "1.12.7",
+  "kernel": "worker",
+  "via": "hub"
+ },
+ "replays": {
+  "halflife_md:prose:zeta": {
+   "bytes": 230,
+   "control": "zeta",
+   "domain": [
+    0.02,
+    0.04,
+    0.06,
+    0.08,
+    0.1,
+    0.12,
+    0.14,
+    0.16,
+    0.18,
+    0.2,
+    0.22,
+    0.24,
+    0.26,
+    0.28,
+    0.3,
+    0.32,
+    0.34,
+    0.36,
+    0.38,
+    0.4,
+    0.42,
+    0.44,
+    0.46,
+    0.48,
+    0.5,
+    0.52,
+    0.54,
+    0.56,
+    0.58,
+    0.6
+   ],
+   "seconds": 0.10706496238708496,
+   "target": "prose",
+   "values": [
+    [
+     "0.02",
+     "5.52"
+    ],
+    [
+     "0.04",
+     "2.76"
+    ],
+    [
+     "0.06",
+     "1.84"
+    ],
+    [
+     "0.08",
+     "1.38"
+    ],
+    [
+     "0.1",
+     "1.1"
+    ],
+    [
+     "0.12",
+     "0.92"
+    ],
+    [
+     "0.14",
+     "0.79"
+    ],
+    [
+     "0.16",
+     "0.69"
+    ],
+    [
+     "0.18",
+     "0.61"
+    ],
+    [
+     "0.2",
+     "0.55"
+    ],
+    [
+     "0.22",
+     "0.5"
+    ],
+    [
+     "0.24",
+     "0.46"
+    ],
+    [
+     "0.26",
+     "0.42"
+    ],
+    [
+     "0.28",
+     "0.39"
+    ],
+    [
+     "0.3",
+     "0.37"
+    ],
+    [
+     "0.32",
+     "0.34"
+    ],
+    [
+     "0.34",
+     "0.32"
+    ],
+    [
+     "0.36",
+     "0.31"
+    ],
+    [
+     "0.38",
+     "0.29"
+    ],
+    [
+     "0.4",
+     "0.28"
+    ],
+    [
+     "0.42",
+     "0.26"
+    ],
+    [
+     "0.44",
+     "0.25"
+    ],
+    [
+     "0.46",
+     "0.24"
+    ],
+    [
+     "0.48",
+     "0.23"
+    ],
+    [
+     "0.5",
+     "0.22"
+    ],
+    [
+     "0.52",
+     "0.21"
+    ],
+    [
+     "0.54",
+     "0.2"
+    ],
+    [
+     "0.56",
+     "0.2"
+    ],
+    [
+     "0.58",
+     "0.19"
+    ],
+    [
+     "0.6",
+     "0.18"
+    ]
+   ]
+  },
+  "peaks:zeta": {
+   "asset": "data/zeta_replay-e230fc5f.i16.bin",
+   "bytes": 11040,
+   "control": "zeta",
+   "domain": [
+    0.02,
+    0.04,
+    0.06,
+    0.08,
+    0.1,
+    0.12,
+    0.14,
+    0.16,
+    0.18,
+    0.2,
+    0.22,
+    0.24,
+    0.26,
+    0.28,
+    0.3,
+    0.32,
+    0.34,
+    0.36,
+    0.38,
+    0.4,
+    0.42,
+    0.44,
+    0.46,
+    0.48,
+    0.5,
+    0.52,
+    0.54,
+    0.56,
+    0.58,
+    0.6
+   ],
+   "seconds": 0.21663618087768555,
+   "slice": [
+    184
+   ],
+   "target": "table"
+  },
+  "trace:zeta": {
+   "asset": "data/zeta_replay-3d1de615.f64.bin",
+   "bytes": 96000,
+   "control": "zeta",
+   "domain": [
+    0.02,
+    0.04,
+    0.06,
+    0.08,
+    0.1,
+    0.12,
+    0.14,
+    0.16,
+    0.18,
+    0.2,
+    0.22,
+    0.24,
+    0.26,
+    0.28,
+    0.3,
+    0.32,
+    0.34,
+    0.36,
+    0.38,
+    0.4,
+    0.42,
+    0.44,
+    0.46,
+    0.48,
+    0.5,
+    0.52,
+    0.54,
+    0.56,
+    0.58,
+    0.6
+   ],
+   "seconds": 0.06804203987121582,
+   "slice": [
+    400
+   ]
+  }
+ },
+ "runtime": "runtime/slate-embed.js",
+ "schema": 1,
+ "theme": {
+  "dark": {
+   "palette": "midnight",
+   "vars": "--bg:#0d1120;--bg2:#141828;--bg3:#1a1e2e;--border:#2a2e40;--text:#d4d8e8;--dim:#6a7090;--accent:#569cd6;--green:#56d364;--red:#e57575;--gold:#ffd700;--orange:#ce9178;--purple:#c586c0;--teal:#4ec9b0;--titlefg:#ffffff;--hl-com:#6a9955;--hl-fn:#dcdcaa;--hl-kw:#c586c0;--hl-macro:#569cd6;--hl-num:#b5cea8;--hl-op:#56b6c2;--hl-str:#ce9178;--hl-sym:#d19a66;--hl-type:#4ec9b0;"
+  },
+  "light": {
+   "palette": "daylight",
+   "vars": "--bg:#ffffff;--bg2:#f5f7fa;--bg3:#eaeef3;--border:#d5dbe3;--text:#222730;--dim:#6b7480;--accent:#0969da;--green:#1a7f37;--red:#cf222e;--gold:#9a6700;--orange:#bc4c00;--purple:#8250df;--teal:#0a7b83;--titlefg:#222730;--hl-com:#008000;--hl-fn:#795e26;--hl-kw:#af00db;--hl-macro:#0000ff;--hl-num:#098658;--hl-op:#0451a5;--hl-str:#a31515;--hl-sym:#b26900;--hl-type:#267f99;"
+  }
+ }
+}
