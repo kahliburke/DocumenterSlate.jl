@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Getting started — DocumenterSlate</title>
-  <link rel="stylesheet" href="../assets/materialdocs.css?v=d177977c">
+  <link rel="stylesheet" href="../assets/materialdocs.css?v=f9d12c25">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
   <meta name="title" content="Getting started — DocumenterSlate">
   <meta property="og:title" content="Getting started — DocumenterSlate">
@@ -82,13 +82,8 @@ show = &quot;both&quot;
 <p>The docs build never runs a notebook itself. It keeps each notebook&#39;s rendered <em>bundle</em> under <code class="md-code-inline">docs/slate/&lt;name&gt;/</code>, and when a notebook is newer than its bundle it renders it through <a href="https://github.com/kahliburke/KaimonSlate.jl">Kaimon Slate</a>: through the Slate hub you already have running, or, on a machine with none, an isolated Kaimon host it starts for the build.</p>
 <p><strong>Export → Docs</strong> in the notebook writes the same bundle from the notebook as it stands.</p>
 <h2 id="In-CI" class="md-heading">In CI<a href="#In-CI" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
-<p>Two ways to run it:</p>
-<ul class="md-list-tight">
-<li><p><strong>Commit the bundles</strong> and build with <code class="md-code-inline">SlateDocs(render = :never, stale = :error)</code>. CI never executes a notebook, needs no Kaimon, and fails if a bundle no longer matches its notebook. This is what this site does.</p>
-</li>
-<li><p><strong>Render in CI</strong> with the default <code class="md-code-inline">render = :auto</code>: the build starts a Kaimon host and renders whatever is out of date.</p>
-</li>
-</ul>
+<p>With the defaults, CI renders every notebook: the build starts an isolated Kaimon host, runs each notebook in its own worker, and writes its bundle before the pages are built. This site is built that way. Keep <code class="md-code-inline">docs/slate/</code> out of git; it is build output.</p>
+<p>A notebook too heavy for CI (GPU work, long fits) can instead have its bundle rendered on a machine that can run it and handed to the build: build with <code class="md-code-inline">SlateDocs(render = :never, stale = :error)</code> and the build uses the bundles it is given, and fails on one that no longer matches its notebook.</p>
       </article>
       <footer class="md-footer">
 <p>Built with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and <a href="https://github.com/mthelm85/MaterialDocs.jl">MaterialDocs.jl</a>.</p>
@@ -110,6 +105,6 @@ show = &quot;both&quot;
   <script>hljs.highlightAll();</script>
   <script src="../siteinfo.js"></script>
   <script src="../../versions.js"></script>
-  <script src="../assets/materialdocs.js?v=d177977c"></script>
+  <script src="../assets/materialdocs.js?v=f9d12c25"></script>
 </body>
 </html>

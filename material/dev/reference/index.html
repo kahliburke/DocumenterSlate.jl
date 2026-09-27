@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reference — DocumenterSlate</title>
-  <link rel="stylesheet" href="../assets/materialdocs.css?v=f271e389">
+  <link rel="stylesheet" href="../assets/materialdocs.css?v=93b1502e">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
   <meta name="title" content="Reference — DocumenterSlate">
   <meta property="og:title" content="Reference — DocumenterSlate">
@@ -77,39 +77,34 @@ show = &quot;both&quot;
 <div class="md-docstring" id="DocumenterSlate">
 <div class="md-docstring-header">
 <h4 class="md-docstring-binding"><code>DocumenterSlate</code></h4>
-<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/310b4d393e11d7fc074c605d687227394b95b322/src/DocumenterSlate.jl#L1-L31" title="View source">source</a>
+<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/aa9bd3d8c3a225b9485e56ae80b6a497e00eeba9/src/DocumenterSlate.jl#L1-L26" title="View source">source</a>
 </div>
 <div class="md-docstring-content">
 <div class="md-code-block">
 <button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
 <pre><code class="language-julia">DocumenterSlate</code></pre>
 </div>
-<p>Put Slate notebooks into Documenter docs. A notebook is rendered once into a <em>bundle</em> (a directory of files, committed with the docs); the docs build reads bundles and never runs a notebook itself.</p>
-<p>In a page, a whole notebook:</p>
+<p>Put Slate notebooks into Documenter docs. In a page, a whole notebook, by its file relative to the page:</p>
 <div class="md-code-block">
 <button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
-<pre><code class="language-markdown">```@slate oscillator
+<pre><code class="language-markdown">```@slate ../notebooks/oscillator.jl
 ```</code></pre>
 </div>
-<p>Its markdown becomes the page&#39;s own prose, its code becomes ordinary highlighted code blocks, and each output is drawn by a <code class="md-code-inline">&lt;slate-cell&gt;</code> element — interactive charts, tables and <code class="md-code-inline">@replay</code> controls included. One cell of it:</p>
+<p>Its markdown becomes the page&#39;s own prose, its code becomes ordinary highlighted code blocks, and each output is drawn by a <code class="md-code-inline">&lt;slate-cell&gt;</code> element, interactive charts, tables and <code class="md-code-inline">@replay</code> controls included. One cell of it:</p>
 <div class="md-code-block">
 <button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
-<pre><code class="language-markdown">```@slate oscillator phase_plot
+<pre><code class="language-markdown">```@slate ../notebooks/oscillator.jl trace
 show = &quot;both&quot;   # &quot;output&quot; (default), &quot;code&quot;, or &quot;both&quot;
 ```</code></pre>
 </div>
-<p>In <code class="md-code-inline">make.jl</code>:</p>
-<div class="md-code-block">
-<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
-<pre><code class="language-julia">makedocs(; …, plugins = [SlateDocs(notebooks = [&quot;oscillator&quot; =&gt; &quot;../examples/oscillator.jl&quot;])])</code></pre>
-</div>
+<p>In <code class="md-code-inline">make.jl</code>, <code class="md-code-inline">makedocs(; …, plugins = [SlateDocs()])</code>. The build renders each referenced notebook into a <em>bundle</em> (a directory of files under <code class="md-code-inline">docs/slate/</code>, build output) when the bundle is missing or older than the notebook, through Kaimon Slate.</p>
 <p>See <a href="../reference/#DocumenterSlate.SlateDocs"><code class="md-code-inline">SlateDocs</code></a> for where bundles live and what happens when one is out of date.</p>
 </div>
 </div>
 <div class="md-docstring" id="DocumenterSlate.SlateDocs">
 <div class="md-docstring-header">
 <h4 class="md-docstring-binding"><code>DocumenterSlate.SlateDocs</code></h4>
-<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/310b4d393e11d7fc074c605d687227394b95b322/src/plugin.jl#L3-L25" title="View source">source</a>
+<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/aa9bd3d8c3a225b9485e56ae80b6a497e00eeba9/src/plugin.jl#L3-L25" title="View source">source</a>
 </div>
 <div class="md-docstring-content">
 <div class="md-code-block">
@@ -163,6 +158,6 @@ document.querySelectorAll('.md-math').forEach(function (el) {
 });</script>
   <script src="../siteinfo.js"></script>
   <script src="../../versions.js"></script>
-  <script src="../assets/materialdocs.js?v=f271e389"></script>
+  <script src="../assets/materialdocs.js?v=93b1502e"></script>
 </body>
 </html>
