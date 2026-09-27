@@ -45,3 +45,11 @@ jobs:
           DOCS_FLAVOR: material
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+      # A render that fails inside the Kaimon host leaves its reasons in the host's and the Slate
+      # extension's logs, which disappear with the runner.
+      - name: Kaimon host logs
+        if: failure()
+        run: |
+          find ~/.cache/kaimonslate /tmp -path '*kaimon*' -name '*.log' 2>/dev/null | while read -r f; do
+            echo "::group::$f"; tail -n 150 "$f"; echo "::endgroup::"
+          done
