@@ -30,17 +30,31 @@ function write_bundle(dir; key = "", schema = 1)
     write(joinpath(dir, "slate-bundle.json"), JSON.json(man))
 end
 
-function site(f; stale = :warn, key = nothing, pages = nothing)
+# The renderer a build calls, stubbed: it records what it was asked to render and writes a current
+# bundle for it, the way KaimonSlate would.
+const RENDERED = String[]
+DS.RENDERER[] = function (jobs; backend, light, dark)
+    for (nb, dir) in jobs
+        push!(RENDERED, basename(nb))
+        write_bundle(dir; key = DS.notebook_key(nb))
+    end
+end
+
+# A site whose pages refer to the notebook by FILE. `bundle` is the key of a bundle already on disk
+# (`nothing` = the current key, `:none` = no bundle yet).
+function site(f; stale = :warn, render = :auto, bundle = nothing, byname = false)
+    empty!(RENDERED)
     mktempdir() do root
         src = joinpath(root, "src"); mkpath(src)
         nb = joinpath(root, "springs.jl"); write(nb, "#%% code id=setup\nk = 3\n")
-        write_bundle(joinpath(root, "slate", "springs"); key = something(key, DS.notebook_key(nb)))
-        write(joinpath(src, "index.md"), "# Home\n\n```@slate springs plot\nshow = \"both\"\n```\n")
-        write(joinpath(src, "springs.md"), "```@slate springs\n```\n")
+        bundle === :none || write_bundle(joinpath(root, "slate", "springs"); key = something(bundle, DS.notebook_key(nb)))
+        ref = byname ? "springs" : "../springs.jl"
+        write(joinpath(src, "index.md"), "# Home\n\n```@slate $ref plot\nshow = \"both\"\n```\n")
+        write(joinpath(src, "springs.md"), "```@slate $ref\n```\n")
         makedocs(; root, source = "src", build = "build", sitename = "T", remotes = nothing,
-                 format = Documenter.HTML(; prettyurls = false),
-                 pages = something(pages, ["index.md", "springs.md"]),
-                 plugins = [SlateDocs(; notebooks = ["springs" => "springs.jl"], stale)],
+                 format = Documenter.HTML(; prettyurls = false), pages = ["index.md", "springs.md"],
+                 plugins = [SlateDocs(; stale, render,
+                                      notebooks = byname ? ["springs" => "springs.jl"] : Pair{String,String}[])],
                  warnonly = true, doctest = false)
         f(root)
     end
@@ -76,13 +90,48 @@ end
         end
     end
 
-    @testset "a stale bundle warns, or fails the build" begin
-        @test_logs (:warn, r"different version") match_mode = :any site(_ -> nothing; key = "not-the-key")
-        @test_throws Exception site(_ -> nothing; key = "not-the-key", stale = :error)
-        logs, _ = Test.collect_test_logs() do
-            site(_ -> nothing; key = "not-the-key", stale = :ignore)
+    @testset "the build renders a notebook it has no current bundle for" begin
+        site(_ -> nothing; bundle = :none)
+        @test RENDERED == ["springs.jl"]
+        site(_ -> nothing; bundle = "not-the-key")
+        @test RENDERED == ["springs.jl"]
+        site(_ -> nothing)                                   # current: nothing to do
+        @test isempty(RENDERED)
+        site(_ -> nothing; render = :always)
+        @test RENDERED == ["springs.jl"]
+    end
+
+    @testset "a page can name a bundle instead of a file" begin
+        site(; byname = true) do root
+            @test occursin("cell=\"plot\"", read(joinpath(root, "build", "index.html"), String))
         end
-        @test !any(l -> occursin("different version", string(l.message)), logs)
+    end
+
+    @testset "with render = :never a stale bundle warns, or fails the build" begin
+        @test_logs (:warn, r"out of date") match_mode = :any site(_ -> nothing; render = :never, bundle = "not-the-key")
+        @test isempty(RENDERED)
+        @test_throws Exception site(_ -> nothing; render = :never, bundle = "not-the-key", stale = :error)
+        @test_throws Exception site(_ -> nothing; render = :never, bundle = :none)
+        logs, _ = Test.collect_test_logs() do
+            site(_ -> nothing; render = :never, bundle = "not-the-key", stale = :ignore)
+        end
+        @test !any(l -> occursin("out of date", string(l.message)), logs)
+    end
+
+    @testset "a reference to a missing notebook says which page and path" begin
+        mktempdir() do root
+            mkpath(joinpath(root, "src"))
+            write(joinpath(root, "src", "index.md"), "```@slate ../nope.jl\n```\n")
+            err = try
+                makedocs(; root, source = "src", build = "build", sitename = "T", remotes = nothing,
+                         format = Documenter.HTML(; prettyurls = false), pages = ["index.md"],
+                         plugins = [SlateDocs()], doctest = false)
+                nothing
+            catch e
+                e
+            end
+            @test err !== nothing && occursin("nope.jl", sprint(showerror, err))
+        end
     end
 
     @testset "a bundle from a newer schema is refused" begin

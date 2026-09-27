@@ -1,5 +1,5 @@
 # ── Stage 2: a whole notebook becomes page content ─────────────────────────────────────────────
-# A top-level ```@slate <name>``` block is replaced, before any expander runs, by the notebook itself
+# A top-level ```@slate <notebook.jl or name>``` block is replaced, before any expander runs, by the notebook itself
 # as ordinary page nodes: markdown cells as markdown, code as julia code blocks, and one
 # ```@slate <name> <cell>``` block per output for the expander to turn into an embedded cell. Doing it
 # here rather than in an expander is what makes the prose first-class — headings are tracked and
@@ -19,7 +19,7 @@ function Selectors.runner(::Type{SlateSplice}, doc::Documenter.Document)
             el isa MarkdownAST.CodeBlock || continue
             m = match(WHOLE_RE, el.info)
             m === nothing && continue
-            splice_notebook!(node, bundle(doc, m.captures[1]))
+            splice_notebook!(node, bundle(doc, bundle_name(doc, page, m.captures[1])))
         end
     end
 end

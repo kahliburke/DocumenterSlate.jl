@@ -35,6 +35,7 @@ using Documenter
 import Documenter: Selectors, Builder, Expanders, HTMLWriter, MDFlatten, MarkdownAST
 using Documenter.MarkdownAST: Node
 import Markdown, JSON, SHA
+import KaimonSlate
 
 export SlateDocs
 
@@ -44,5 +45,6 @@ include("splice.jl")
 include("expander.jl")
 include("html.jl")
 include("vitepress.jl")
+include("render.jl")
 
 end

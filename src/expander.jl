@@ -36,9 +36,9 @@ function Selectors.runner(::Type{SlateBlocks}, node, page, doc)
     el = node.element::MarkdownAST.CodeBlock
     m = match(CELL_RE, el.info)
     m === nothing && error("@slate: expected ```@slate <notebook> [<cell>]```, got ```$(el.info)``` in $(page.source)")
-    name = String(m.captures[1])
     m.captures[2] === nothing &&
-        error("@slate $name: a whole notebook can only be placed at the top level of a page ($(page.source))")
+        error("@slate $(m.captures[1]): a whole notebook can only be placed at the top level of a page ($(page.source))")
+    name = bundle_name(doc, page, m.captures[1])
     id = String(m.captures[2])
     b = bundle(doc, name)
     c = cell(b, id)
