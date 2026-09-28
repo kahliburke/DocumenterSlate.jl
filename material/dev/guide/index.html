@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Getting started — DocumenterSlate</title>
-  <link rel="stylesheet" href="../assets/materialdocs.css?v=9bdb0aa7">
+  <link rel="stylesheet" href="../assets/materialdocs.css?v=e7b1d97d">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
   <meta name="title" content="Getting started — DocumenterSlate">
   <meta property="og:title" content="Getting started — DocumenterSlate">
@@ -75,6 +75,14 @@ makedocs(; sitename = &quot;MyPkg&quot;, plugins = [SlateDocs()], pages = […])
 ```</code></pre>
 </div>
 <p>That places the whole notebook: its markdown cells become the page&#39;s own markdown (headings, cross-references and search all work), its code cells become <code class="md-code-inline">julia</code> code blocks, and each output is drawn live. Cells tagged <code class="md-code-inline">nodocs</code> are left out; <code class="md-code-inline">hidecode</code> cells show only their output.</p>
+<p>To place part of a notebook, list the cells to include, in any order; they appear in notebook order:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-markdown">```@slate ../notebooks/tour.jl
+cells = &quot;intro trace&quot;
+```</code></pre>
+</div>
+<p>A notebook can be split across several pages this way. A link to the notebook goes to the page that places all of it, or else to the first page that places part of it.</p>
 <p>For one cell, add its id, and <code class="md-code-inline">show</code> to include its source:</p>
 <div class="md-code-block">
 <button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
@@ -112,6 +120,6 @@ show = &quot;both&quot;
   <script>hljs.highlightAll();</script>
   <script src="../siteinfo.js"></script>
   <script src="../../versions.js"></script>
-  <script src="../assets/materialdocs.js?v=9bdb0aa7"></script>
+  <script src="../assets/materialdocs.js?v=e7b1d97d"></script>
 </body>
 </html>
