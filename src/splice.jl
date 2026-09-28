@@ -22,11 +22,30 @@ function Selectors.runner(::Type{SlateSplice}, doc::Documenter.Document)
             m = match(WHOLE_RE, el.info)
             m === nothing && continue
             name = bundle_name(doc, page, m.captures[1])
+            b = bundle(doc, name)
+            only = placed_cells(b, block_options(el.code), page)
             file = get(p.sources, name, nothing)
-            file === nothing || (p.pages[file] = page)
-            splice_notebook!(node, bundle(doc, name), file)
+            # A link to the notebook itself goes to the page that places all of it, or else to the
+            # first page that places part of it.
+            if file !== nothing && (only === nothing || !haskey(p.pages, file))
+                p.pages[file] = page
+            end
+            splice_notebook!(node, b, file; only)
         end
     end
+end
+
+# The cells a whole-notebook block places: all of them, or those its `cells = "id id …"` option names.
+function placed_cells(b::Bundle, opts, page)
+    for k in keys(opts)
+        k == "cells" || error("@slate $(b.name): unknown option `$k` for a whole notebook in $(page.source)")
+    end
+    haskey(opts, "cells") || return nothing
+    ids = Set(split(opts["cells"]))
+    missing_ids = setdiff(ids, b.order)
+    isempty(missing_ids) ||
+        error("@slate $(b.name): no cell $(join(sort!(collect(missing_ids)), ", ")) in the notebook ($(page.source))")
+    return ids
 end
 
 """
@@ -44,15 +63,17 @@ slugify(s) = strip(replace(lowercase(strip(String(s))), r"[^\p{L}\p{N}]+" => "-"
 const NB_LINK = "slate-notebook:"
 
 """
-    notebook_nodes(b::Bundle, file = nothing) -> Vector{Node}
+    notebook_nodes(b::Bundle, file = nothing; only = nothing) -> Vector{Node}
 
 The page nodes a whole notebook expands to. Cells tagged `nodocs` are left out, as are cells folded
-away in the notebook (`collapsed`). With the notebook's `file`, its headings get notebook-scoped ids
-and its links to other notebooks (or to its own headings) are made resolvable from the page.
+away in the notebook (`collapsed`). With `only`, a set of cell ids, just those cells are placed, in
+notebook order. With the notebook's `file`, its headings get notebook-scoped ids and its links to
+other notebooks (or to its own headings) are made resolvable from the page.
 """
-function notebook_nodes(b::Bundle, file = nothing)
+function notebook_nodes(b::Bundle, file = nothing; only = nothing)
     out = Node[]
     for id in b.order
+        only === nothing || id in only || continue
         c = b.cells[id]
         tags = Set(String.(get(c, "tags", String[])))
         ("nodocs" in tags || "collapsed" in tags) && continue
@@ -118,8 +139,8 @@ function insert_before!(node::Node, new::Node)
     return new
 end
 
-function splice_notebook!(node::Node, b::Bundle, file = nothing)
-    for n in notebook_nodes(b, file)
+function splice_notebook!(node::Node, b::Bundle, file = nothing; only = nothing)
+    for n in notebook_nodes(b, file; only)
         insert_before!(node, n)
     end
     MarkdownAST.unlink!(node)

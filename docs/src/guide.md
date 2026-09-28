@@ -23,6 +23,17 @@ That places the whole notebook: its markdown cells become the page's own markdow
 cross-references and search all work), its code cells become `julia` code blocks, and each output is
 drawn live. Cells tagged `nodocs` are left out; `hidecode` cells show only their output.
 
+To place part of a notebook, list the cells to include, in any order; they appear in notebook order:
+
+````markdown
+```@slate ../notebooks/tour.jl
+cells = "intro trace"
+```
+````
+
+A notebook can be split across several pages this way. A link to the notebook goes to the page that
+places all of it, or else to the first page that places part of it.
+
 For one cell, add its id, and `show` to include its source:
 
 ````markdown

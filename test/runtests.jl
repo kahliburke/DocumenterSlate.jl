@@ -179,6 +179,28 @@ end
         end
     end
 
+    @testset "a notebook can be placed in parts" begin
+        mktempdir() do root
+            src = joinpath(root, "src"); mkpath(src)
+            nb = joinpath(root, "springs.jl"); write(nb, "#%% code id=setup\nk = 3\n")
+            write_bundle(joinpath(root, "slate", "springs"); key = DS.notebook_key(nb))
+            write(joinpath(src, "prose.md"), "```@slate ../springs.jl\ncells = \"intro\"\n```\n")
+            write(joinpath(src, "code.md"), "```@slate ../springs.jl\ncells = \"plot setup\"\n```\n")
+            makedocs(; root, source = "src", build = "build", sitename = "T", remotes = nothing,
+                     format = Documenter.HTML(; prettyurls = false), pages = ["prose.md", "code.md"],
+                     plugins = [SlateDocs()], warnonly = true, doctest = false)
+            prose = read(joinpath(root, "build", "prose.html"), String)
+            code = read(joinpath(root, "build", "code.html"), String)
+            @test occursin("A paragraph with", prose) && !occursin("echart(k)", prose)
+            @test occursin("echart(k)", code) && !occursin("A paragraph with", code)
+
+            write(joinpath(src, "code.md"), "```@slate ../springs.jl\ncells = \"plot nope\"\n```\n")
+            @test_throws Exception makedocs(; root, source = "src", build = "build", sitename = "T",
+                remotes = nothing, format = Documenter.HTML(; prettyurls = false),
+                pages = ["prose.md", "code.md"], plugins = [SlateDocs()], doctest = false)
+        end
+    end
+
     @testset "block options" begin
         @test DS.block_options("show = \"both\"\n# a comment\n") == Dict("show" => "both")
         @test_throws ErrorException DS.block_options("nonsense")
