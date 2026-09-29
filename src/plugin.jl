@@ -160,27 +160,32 @@ end
 function refresh_bundles!(p::SlateDocs, root)
     jobs = Pair{String,String}[]
     stale = String[]
+    rendering = String[]             # "name: why", for the log
     for (name, file) in sort!(collect(p.sources))
         isfile(file) || error("SlateDocs: notebook '$name' not found at $file")
         dir = joinpath(root, name)
         have = isfile(joinpath(dir, MANIFEST))
-        current = have && bundle_key(load_bundle(name, dir)) == notebook_key(file)
+        b = have ? load_bundle(name, dir) : nothing
+        current = have && bundle_key(b) == notebook_key(file)
+        reason = !have ? "no bundle yet" : current ? "rendering every notebook (`render = :always`)" :
+                 (ch = changed_inputs(b, file); isempty(ch) ? "changed" : "changed: " * join(ch, ", "))
         if p.render === :always || (p.render === :auto && !current)
             push!(jobs, file => dir)
+            push!(rendering, "$name: $reason")
         elseif !have
             error("SlateDocs: no bundle for '$name' at $dir, and `render = :never`. Render it (Export → " *
                   "Docs in the notebook), or build once with the default `render = :auto`.")
         elseif !current
-            push!(stale, name)
+            push!(stale, "$name: $reason")
         end
     end
     if !isempty(jobs)
-        @info "SlateDocs: rendering $(length(jobs)) notebook(s)" notebooks = [basename(f) for (f, _) in jobs]
+        @info "SlateDocs: rendering $(length(jobs)) notebook(s)\n" * join(rendering, "\n")
         RENDERER[](jobs; backend = p.backend, light = p.light, dark = p.dark)
     end
     if !isempty(stale) && p.stale !== :ignore
-        msg = "SlateDocs: out of date with their notebooks: $(join(stale, ", ")). Re-render them, or " *
-              "build with the default `render = :auto`."
+        msg = "SlateDocs: bundles out of date with their notebooks. Re-render them, or build with the " *
+              "default `render = :auto`.\n" * join(stale, "\n")
         p.stale === :error ? error(msg) : @warn(msg)
     end
     return nothing

@@ -19,8 +19,8 @@ show = "both"   # "output" (default), "code", or "both"
 ````
 
 In `make.jl`, `makedocs(; …, plugins = [SlateDocs()])`. The build renders each referenced notebook into
-a *bundle* (a directory of files under `docs/slate/`, build output) when the bundle is missing or older
-than the notebook, through Kaimon Slate.
+a *bundle* (a directory of files under `docs/slate/`, build output) when the bundle is missing or out of
+date with the notebook or anything it runs, through Kaimon Slate.
 
 See [`SlateDocs`](@ref) for where bundles live and what happens when one is out of date.
 """
@@ -29,7 +29,7 @@ module DocumenterSlate
 using Documenter
 import Documenter: Selectors, Builder, Expanders, HTMLWriter, MDFlatten, MarkdownAST
 using Documenter.MarkdownAST: Node
-import Markdown, JSON, SHA
+import Markdown, JSON
 import KaimonSlate
 
 export SlateDocs

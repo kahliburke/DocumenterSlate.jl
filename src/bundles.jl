@@ -40,11 +40,24 @@ end
 """
     notebook_key(path) -> String
 
-The key a bundle records for the notebook it was rendered from: the file's SHA-256 with line endings
-normalised. Identical to `KaimonSlate.NotebookServer.doc_bundle_key`, restated here so checking
-whether a bundle is current does not need KaimonSlate.
+The key a bundle rendered from `path` records while it is current: KaimonSlate's `doc_bundle_key`,
+which covers the notebook, its environment, the packages that environment takes by path, and the
+files the notebook reads.
 """
-notebook_key(path::AbstractString) = bytes2hex(SHA.sha256(replace(read(path, String), "\r\n" => "\n")))
+notebook_key(path::AbstractString) = KaimonSlate.doc_bundle_key(path)
+
+"""
+    changed_inputs(b::Bundle, path) -> Vector{String}
+
+The files whose content differs from when `b` was rendered from `path`, for saying why it is out of
+date. Empty for a bundle that recorded no inputs.
+"""
+function changed_inputs(b::Bundle, path::AbstractString)
+    old = get(b.manifest, "inputs", nothing)
+    old isa AbstractDict || return String[]
+    new = Dict(KaimonSlate.doc_bundle_inputs(path))
+    return sort!([f for f in union(keys(old), keys(new)) if get(old, f, nothing) != get(new, f, nothing)])
+end
 
 bundle_key(b::Bundle) = String(get(b.manifest, "key", ""))
 

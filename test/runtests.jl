@@ -61,6 +61,20 @@ function site(f; stale = :warn, render = :auto, bundle = nothing, byname = false
 end
 
 @testset "DocumenterSlate" begin
+    @testset "a stale bundle says which of its inputs changed" begin
+        mktempdir() do root
+            nb = joinpath(root, "n.jl"); write(nb, "#%% code id=x\ninclude(\"util.jl\")\n")
+            write(joinpath(root, "util.jl"), "f() = 1\n")
+            dir = joinpath(root, "slate", "n"); write_bundle(dir; key = DS.notebook_key(nb))
+            man = JSON.parsefile(joinpath(dir, "slate-bundle.json"))
+            man["inputs"] = Dict(DS.KaimonSlate.doc_bundle_inputs(nb))
+            write(joinpath(dir, "slate-bundle.json"), JSON.json(man))
+            write(joinpath(root, "util.jl"), "f() = 2\n")
+            b = DS.load_bundle("n", dir)
+            @test DS.bundle_key(b) != DS.notebook_key(nb) && DS.changed_inputs(b, nb) == ["util.jl"]
+        end
+    end
+
     @testset "a whole notebook becomes page content" begin
         site() do root
             html = read(joinpath(root, "build", "springs.html"), String)
