@@ -93,7 +93,11 @@
  ],
  "frontend": [],
  "generator": "KaimonSlate 1.9.0",
- "key": "e7ebb246948fff30df6f406032a4ec57987d5c20dbe041c61cef95a764a5db19",
+ "inputs": {
+  "(notebook)": "e7ebb246948fff30df6f406032a4ec57987d5c20dbe041c61cef95a764a5db19",
+  "Project.toml": "dd6803a32aa1a85679169fe5ba91ffb5d96c8f6a6d7b8245399946ef7950d62c"
+ },
+ "key": "c9a5691461785f17f3b07c81eaf83227a878ddf6e629ad53fc2606e3a4f416ed",
  "libs": [
   {
    "css": "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css",
@@ -121,7 +125,7 @@
   "title": "Resonance"
  },
  "rendered": {
-  "at": "2026-09-28T21:22:10.405Z",
+  "at": "2026-09-29T06:40:46.729Z",
   "errors": [],
   "frozen": [],
   "julia": "1.12.7",
@@ -154,7 +158,7 @@
     0.95,
     1.0
    ],
-   "seconds": 0.26406288146972656,
+   "seconds": 0.2698512077331543,
    "target": "prose",
    "values": [
     [
@@ -285,7 +289,7 @@
     0.95,
     1.0
    ],
-   "seconds": 0.502701997756958,
+   "seconds": 0.4462320804595947,
    "slice": [
     8
    ],
@@ -317,7 +321,7 @@
     0.95,
     1.0
    ],
-   "seconds": 0.2781691551208496,
+   "seconds": 0.28177714347839355,
    "slice": [
     300
    ]
