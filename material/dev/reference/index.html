@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reference — DocumenterSlate</title>
-  <link rel="stylesheet" href="../assets/materialdocs.css?v=97d27408">
+  <link rel="stylesheet" href="../assets/materialdocs.css?v=b1b4b48b">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
   <meta name="title" content="Reference — DocumenterSlate">
   <meta property="og:title" content="Reference — DocumenterSlate">
@@ -82,7 +82,7 @@ show = &quot;both&quot;
 <div class="md-docstring" id="DocumenterSlate">
 <div class="md-docstring-header">
 <h4 class="md-docstring-binding"><code>DocumenterSlate</code></h4>
-<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/5df0000b04b6716ee1df613d1e4a6b60664a43c4/src/DocumenterSlate.jl#L1-L26" title="View source">source</a>
+<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/061a9c61562553600975cec90d0b03321c555fa7/src/DocumenterSlate.jl#L1-L26" title="View source">source</a>
 </div>
 <div class="md-docstring-content">
 <div class="md-code-block">
@@ -102,14 +102,14 @@ show = &quot;both&quot;
 show = &quot;both&quot;   # &quot;output&quot; (default), &quot;code&quot;, or &quot;both&quot;
 ```</code></pre>
 </div>
-<p>In <code class="md-code-inline">make.jl</code>, <code class="md-code-inline">makedocs(; …, plugins = [SlateDocs()])</code>. The build renders each referenced notebook into a <em>bundle</em> (a directory of files under <code class="md-code-inline">docs/slate/</code>, build output) when the bundle is missing or older than the notebook, through Kaimon Slate.</p>
+<p>In <code class="md-code-inline">make.jl</code>, <code class="md-code-inline">makedocs(; …, plugins = [SlateDocs()])</code>. The build renders each referenced notebook into a <em>bundle</em> (a directory of files under <code class="md-code-inline">docs/slate/</code>, build output) when the bundle is missing or out of date with the notebook or anything it runs, through Kaimon Slate.</p>
 <p>See <a href="../reference/#DocumenterSlate.SlateDocs"><code class="md-code-inline">SlateDocs</code></a> for where bundles live and what happens when one is out of date.</p>
 </div>
 </div>
 <div class="md-docstring" id="DocumenterSlate.SlateDocs">
 <div class="md-docstring-header">
 <h4 class="md-docstring-binding"><code>DocumenterSlate.SlateDocs</code></h4>
-<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/5df0000b04b6716ee1df613d1e4a6b60664a43c4/src/plugin.jl#L3-L26" title="View source">source</a>
+<a class="md-docstring-source" href="https://github.com/kahliburke/DocumenterSlate.jl/blob/061a9c61562553600975cec90d0b03321c555fa7/src/plugin.jl#L3-L26" title="View source">source</a>
 </div>
 <div class="md-docstring-content">
 <div class="md-code-block">
@@ -163,6 +163,6 @@ document.querySelectorAll('.md-math').forEach(function (el) {
 });</script>
   <script src="../siteinfo.js"></script>
   <script src="../../versions.js"></script>
-  <script src="../assets/materialdocs.js?v=97d27408"></script>
+  <script src="../assets/materialdocs.js?v=b1b4b48b"></script>
 </body>
 </html>
