@@ -102,7 +102,11 @@
  ],
  "frontend": [],
  "generator": "KaimonSlate 1.9.0",
- "key": "b9ab6e5967bd8e015fd3380e7718212044437613a04423a7d5068c68bc0310e3",
+ "inputs": {
+  "(notebook)": "b9ab6e5967bd8e015fd3380e7718212044437613a04423a7d5068c68bc0310e3",
+  "Project.toml": "dd6803a32aa1a85679169fe5ba91ffb5d96c8f6a6d7b8245399946ef7950d62c"
+ },
+ "key": "1da6ddc9b2cbe947cbf240d4f3d5226f24b725b2b7a56309fc90a5bd27ca2093",
  "libs": [
   {
    "css": "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css",
@@ -130,7 +134,7 @@
   "title": "A damped oscillator"
  },
  "rendered": {
-  "at": "2026-09-28T21:21:37.534Z",
+  "at": "2026-09-29T06:40:13.908Z",
   "errors": [],
   "frozen": [],
   "julia": "1.12.7",
@@ -173,7 +177,7 @@
     0.58,
     0.6
    ],
-   "seconds": 0.252622127532959,
+   "seconds": 0.25668978691101074,
    "target": "prose",
    "values": [
     [
@@ -334,7 +338,7 @@
     0.58,
     0.6
    ],
-   "seconds": 0.5368139743804932,
+   "seconds": 0.5335171222686768,
    "slice": [
     184
    ],
@@ -376,7 +380,7 @@
     0.58,
     0.6
    ],
-   "seconds": 0.2677500247955322,
+   "seconds": 0.2750668525695801,
    "slice": [
     400
    ]
