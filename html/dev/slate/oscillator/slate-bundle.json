@@ -101,7 +101,7 @@
   }
  ],
  "frontend": [],
- "generator": "KaimonSlate 1.9.0",
+ "generator": "KaimonSlate 1.10.0",
  "inputs": {
   "(notebook)": "b9ab6e5967bd8e015fd3380e7718212044437613a04423a7d5068c68bc0310e3",
   "Project.toml": "dd6803a32aa1a85679169fe5ba91ffb5d96c8f6a6d7b8245399946ef7950d62c"
@@ -134,7 +134,7 @@
   "title": "A damped oscillator"
  },
  "rendered": {
-  "at": "2026-09-29T06:40:13.908Z",
+  "at": "2026-10-02T02:47:37.328Z",
   "errors": [],
   "frozen": [],
   "julia": "1.12.7",
@@ -177,7 +177,7 @@
     0.58,
     0.6
    ],
-   "seconds": 0.25668978691101074,
+   "seconds": 0.2545030117034912,
    "target": "prose",
    "values": [
     [
@@ -338,7 +338,7 @@
     0.58,
     0.6
    ],
-   "seconds": 0.5335171222686768,
+   "seconds": 0.5275051593780518,
    "slice": [
     184
    ],
@@ -380,7 +380,7 @@
     0.58,
     0.6
    ],
-   "seconds": 0.2750668525695801,
+   "seconds": 0.27587008476257324,
    "slice": [
     400
    ]
