@@ -19,6 +19,8 @@ function write_bundle(dir; key = "", schema = 1)
              "markdown" => "See [@ref].", "file" => "cells/cite.json"),
         Dict("id" => "secret", "kind" => "code", "tags" => ["nodocs"], "source" => "hidden()", "output" => true,
              "file" => "cells/secret.json"),
+        Dict("id" => "sitelink", "kind" => "markdown", "tags" => String[], "native" => true, "output" => false,
+             "markdown" => "As in [Lovelace, 2024](slate-docpage:index.md)."),
     ]
     for c in cells
         haskey(c, "file") && write(joinpath(dir, c["file"]), JSON.json(Dict("id" => c["id"], "html" => "<p>x</p>", "charts" => [])))
@@ -87,6 +89,8 @@ end
             @test !occursin("cell=\"setup\"", html)
             # prose Slate must render itself is embedded, not dropped
             @test occursin("cell=\"cite\"", html)
+            # a link to a page of the site, written under the docs source, is made relative to this page
+            @test occursin(r"<a href=\"index.html\">Lovelace, 2024</a>", html)
             # `nodocs` leaves a cell out entirely
             @test !occursin("hidden()", html) && !occursin("cell=\"secret\"", html)
             # the runtime is on the page and the bundle is in the site

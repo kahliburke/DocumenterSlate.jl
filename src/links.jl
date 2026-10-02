@@ -5,6 +5,11 @@
 # with a fragment, to the heading, through a Documenter cross-reference so a heading that doesn't
 # exist fails the build instead of producing a dead link.
 
+# A notebook that links to a page of the site it is placed in (a citation's entry naming the cited
+# work's page, say) cannot know which page will hold it, so it writes the target as a path under the
+# docs source with this prefix, and the link is made relative to the page that holds it.
+const DOC_LINK = "slate-docpage:"
+
 abstract type SlateLinks <: Builder.DocumentPipeline end
 Selectors.order(::Type{SlateLinks}) = 1.95            # after SlateSplice, before ExpandTemplates (2.0)
 
@@ -14,6 +19,13 @@ function Selectors.runner(::Type{SlateLinks}, doc::Documenter.Document)
     for (_, page) in doc.blueprint.pages, n in collect_nodes(page.mdast)
         el = n.element
         el isa MarkdownAST.Link || continue
+        if startswith(el.destination, DOC_LINK)
+            target, frag = split_fragment(el.destination[(length(DOC_LINK) + 1):end])
+            path = normpath(joinpath(doc.user.root, doc.user.source, target))
+            el.destination = replace(relpath(path, dirname(page_file(doc, page))), '\\' => '/') *
+                             (isempty(frag) ? "" : "#" * frag)
+            continue
+        end
         resolved = notebook_link(doc, page, el.destination)
         resolved === nothing && continue
         file, frag = resolved
