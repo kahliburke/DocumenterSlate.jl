@@ -92,7 +92,7 @@
   }
  ],
  "frontend": [],
- "generator": "KaimonSlate 1.9.0",
+ "generator": "KaimonSlate 1.10.0",
  "inputs": {
   "(notebook)": "e7ebb246948fff30df6f406032a4ec57987d5c20dbe041c61cef95a764a5db19",
   "Project.toml": "dd6803a32aa1a85679169fe5ba91ffb5d96c8f6a6d7b8245399946ef7950d62c"
@@ -125,7 +125,7 @@
   "title": "Resonance"
  },
  "rendered": {
-  "at": "2026-09-29T06:40:46.729Z",
+  "at": "2026-10-02T02:48:10.568Z",
   "errors": [],
   "frozen": [],
   "julia": "1.12.7",
@@ -158,7 +158,7 @@
     0.95,
     1.0
    ],
-   "seconds": 0.2698512077331543,
+   "seconds": 0.263887882232666,
    "target": "prose",
    "values": [
     [
@@ -289,7 +289,7 @@
     0.95,
     1.0
    ],
-   "seconds": 0.4462320804595947,
+   "seconds": 0.42621493339538574,
    "slice": [
     8
    ],
@@ -321,7 +321,7 @@
     0.95,
     1.0
    ],
-   "seconds": 0.28177714347839355,
+   "seconds": 0.27259206771850586,
    "slice": [
     300
    ]
