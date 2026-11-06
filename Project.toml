@@ -14,7 +14,7 @@ DocumenterVitepress = "4710194d-e776-4893-9690-8d956a29c365"
 MaterialDocs = "10bdffc8-969c-4dd4-83f3-742518eccd6b"
 
 [sources]
-KaimonSlate = {rev = "feat/documenter", url = "https://github.com/kahliburke/KaimonSlate.jl"}
+KaimonSlate = {rev = "main", url = "https://github.com/kahliburke/KaimonSlate.jl"}
 
 [extensions]
 DocumenterSlateMaterialDocsExt = "MaterialDocs"
@@ -24,7 +24,7 @@ DocumenterSlateVitepressExt = "DocumenterVitepress"
 Documenter = "1.11"
 DocumenterVitepress = "0.3.6"
 JSON = "0.21, 1"
-KaimonSlate = "1.9"
+KaimonSlate = "1.9, 2"
 Markdown = "1"
 MaterialDocs = "0.2"
 julia = "1.12"
