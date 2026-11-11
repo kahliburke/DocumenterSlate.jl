@@ -15,7 +15,8 @@ end
 
 abstract type SlateBlocks <: Expanders.NestedExpanderPipeline end
 Selectors.order(::Type{SlateBlocks}) = 7.9
-Selectors.matcher(::Type{SlateBlocks}, node, page, doc) = Documenter.iscode(node, r"^@slate\b")
+Selectors.matcher(::Type{SlateBlocks}, node, page, doc) =
+    node.element isa MarkdownAST.CodeBlock && occursin(r"^@slate\b", node.element.info)
 
 const CELL_RE = r"^@slate\s+(\S+)(?:\s+(\S+))?\s*$"
 
